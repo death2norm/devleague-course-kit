@@ -9,7 +9,7 @@ Checks (each one exists because a review or audit had to fix the same problem by
   1. cues      every [SLIDE x] cue in the script has a slide, and every non-divider slide has a cue, same order
   2. overlap   a nightly quiz question too close to that night's practice questions, lab files or another quiz
   3. answers   quiz keys that are the longest choice by a wide margin (test-wise students pick the longest)
-  4. letters   spoken practice-question answers bunched on one letter
+  4. letters   spoken practice-question answers bunched on one letter (and right choices that are the longest)
   5. hedges    unhedged claims about what the exam will do ("the exam loves ...")
   6. facts     course-specific forbidden wording from course_lint.tsv (stale pass marks, old names, retired facts)
   7. keys      quiz JSON and quiz key agree on the number of questions; each question has exactly one right answer
@@ -90,6 +90,24 @@ def check_letters(s, slides):
             warn(s, f"letters: {L.count(top)} of {len(L)} practice answers are {top}")
         if len(set(L)) <= 2: warn(s, f"letters: practice answers use only {''.join(sorted(set(L)))}")
 
+def check_practice_lengths(s, script, slides):
+    """Spoken practice questions: the right choice shouldn't be the longest too often, or by a wide margin."""
+    labels = re.findall(r'<!-- SLIDE ([^ ]+) -->\n(?:(?!<!-- SLIDE).)*?\*\*Label:\*\* Answer: ([A-D])', slides, re.S)
+    cues = [(m.group(1), m.start()) for m in re.finditer(r'^\[SLIDE ([^\]]+)\]', script, re.M)]
+    n = longest = 0
+    for sid, L in labels:
+        idx = [i for i, (c, _) in enumerate(cues) if c == sid]
+        if not idx: continue
+        i = idx[0]; seg = script[cues[i][1]:cues[i + 1][1] if i + 1 < len(cues) else len(script)]
+        ch = dict(re.findall(r'^([A-D])\. (.*)$', seg, re.M))
+        if L not in ch or len(ch) < 3: continue
+        n += 1; k = len(ch[L]); d = max(len(v) for x, v in ch.items() if x != L)
+        if k > d: longest += 1
+        if k > d and k >= 1.6 * d:
+            warn(s, f"answers: practice {sid} right choice is much the longest ({k} vs {d} characters)")
+    if n >= 6 and longest / n > 0.4:
+        warn(s, f"answers: right choice is the longest in {longest} of {n} practice questions (aim for a third or fewer)")
+
 HEDGE_BAD = re.compile(r"\b(the exam (?:loves|likes|always|will (?:ask|test|give|show)|is going to|wants you to)|you will (?:definitely |always )?(?:see|be asked|get)|(?:always|guaranteed to) (?:shows?|comes?) up|every exam (?:has|asks))", re.I)
 HEDGE_OK = re.compile(r"\b(I'd expect|likely|probably|often|tends to|in my experience|could|may|might|I'd bet)\b", re.I)
 def check_hedges(s, name, text):
@@ -127,6 +145,7 @@ def main():
         if not script: continue
         check_cues(s, script, slides)
         check_letters(s, slides)
+        check_practice_lengths(s, script, slides)
         lab = read(f'src/labguide_S{s}.md') + '\n\n' + read(f'src/worksheet_S{s}.md')
         if s in allq:
             others = [(f"S{n} Q{i}", q['stem']) for n, qs in allq.items() if n != s for i, q in enumerate(qs, 1)]
