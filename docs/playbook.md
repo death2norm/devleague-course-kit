@@ -75,6 +75,8 @@ The site is learn.devleague.com (Moodle 4.5, Moove theme). There is no server ac
 8. **Test-student pass:** enrol the test account as Student, use "Log in as," make the course visible only for the test, then check: session materials show, hidden items stay hidden, one quiz attempt scores and shows feedback, a drag-and-drop PBQ saves, a random-draw quiz starts, Practice Exam A shows 90 minutes and 1 attempt, a lab shows "Add submission," the grades page shows no totals. Hide the course again.
 9. **Per cohort (later):** copy the master without user data, set dates, Zoom link and schedule, Exam B password the day before Session 18, open and close times for Exams A–D, candidate groups for C and D, recording URLs, course survey link.
 
+**What made the Network+ import fast (Nov 12, about 2 hours):** combine every session GIFT file into one import (the `$CATEGORY` lines keep them apart); import each pool XML separately; make the reflections and honor statement with the course repo's `tools/moodle_reflections.py`; copy each new activity's settings from the matching Security+ activity (course 43) and change only what differs; check the random slots' domain order and the domain grade items after each exam. In Exams C and D, put the honor statement alone in an unshuffled first quiz section, so section shuffle can't move it. Before enrolling the test account, switch off the course's manual-enrolment welcome message and switch it back on afterwards, so no email goes out. "Log in as" ends Josh's admin session: he signs back in before the course is hidden again.
+
 ## Phase 8: Hand-over
 
 - Final bundle: every session package (newest letter of each), the practice-bank zip, the final checks file with every item closed or assigned. Josh uploads to Drive.
