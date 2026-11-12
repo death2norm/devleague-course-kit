@@ -252,6 +252,9 @@ def build(md, out, style='A', course='Network+ N10-009', session=None):
             shade(c, '2B2F33'); borders(c); cell_margins(c, 90, 90, 180, 140)
             p = c.paragraphs[0]; r = p.add_run('TONIGHT’S HOMEWORK   '); r.bold = True; r.font.size = Pt(9); r.font.color.rgb = RGBColor(0x7F, 0xD1, 0xDB)
             runs(p, ' '.join(x.lstrip('- ') for x in lines if x.strip()), WHITE, 10, keycolor=WHITE)
+        p = c.add_paragraph(); para_fmt(p, 0, 3)
+        r = p.add_run('CHECK YOURSELF   '); r.bold = True; r.font.size = Pt(9); r.font.color.rgb = RGBColor(0x7F, 0xD1, 0xDB)
+        runs(p, '    '.join('\u2610 ' + h for h, _ in main if h), WHITE, 9.5)
     footer(d, course, session)
     d.save(out)
 
