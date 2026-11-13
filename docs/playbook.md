@@ -1,6 +1,6 @@
 # DevLeague Course Playbook: Every Step, Start to Finish
 
-*Version 3, November 12, 2026 (v3 adds the course-level extras phase, the Moodle tools and settings file, the access and approvals list, the per-cohort runbook, the handout style setting and the PDF check; v2 added the shared kit, automatic checks, saved build settings and the short handoff). Written from what Security+ (Moodle course 43) and Network+ (N10-009) actually went through. Use it for every new course. Session-level build rules (script, deck, quiz, lab, QA) are in the build standard, `devleague-course-kit/skill/SKILL.md` (saved as the devleague-course-builder skill); this playbook covers the whole course around them.*
+*Version 3.1, November 13, 2026 (3.1 adds the rest of the Security+ course-level set to Phase 5b: Trap Atlas, Domain Cheat Sheets, After the Exam, Instructor and TA Guide, Coverage Matrix, with a completeness check in the extras build; v3 added the course-level extras phase, the Moodle tools and settings file, the access and approvals list, the per-cohort runbook, the handout style setting and the PDF check; v2 added the shared kit, automatic checks, saved build settings and the short handoff). Written from what Security+ (Moodle course 43) and Network+ (N10-009) actually went through. Use it for every new course. Session-level build rules (script, deck, quiz, lab, QA) are in the build standard, `devleague-course-kit/skill/SKILL.md` (saved as the devleague-course-builder skill); this playbook covers the whole course around them.*
 
 ## How the work is run
 
