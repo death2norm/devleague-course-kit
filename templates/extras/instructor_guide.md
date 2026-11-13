@@ -216,7 +216,7 @@ That's the whole list. Any other duty needs the program team's approval first.
 >
 > Hi [First name],
 >
-> Thank you for taking Practice Exam B. You scored [score] of 90, and the voucher bar is 77. That's a measurement, not a verdict. Your two weakest domains were **[Domain]** and **[Domain]**, and your study plan for them is attached.
+> Thank you for taking Practice Exam B. You scored [score] of 90, and the voucher bar is 77 of 90. That's a measurement, not a verdict. Your two weakest domains were **[Domain]** and **[Domain]**, and your study plan for them is attached.
 >
 > Practice Exam C is open in Moodle (Session 18) from **[date]** to **[date]**. It's at home: one 90-minute attempt, closed book, new questions, with an honor statement first. Score 77 of 90 or higher, and your voucher is released.
 >
@@ -240,7 +240,7 @@ That's the whole list. Any other duty needs the program team's approval first.
 >
 > Hi [First name],
 >
-> Thank you for taking Practice Exam C. You scored [score] of 90, and the voucher bar is 77. You have one more practice exam, Exam D, with new questions you haven't seen.
+> Thank you for taking Practice Exam C. You scored [score] of 90, and the voucher bar is 77 of 90. You have one more practice exam, Exam D, with new questions you haven't seen.
 >
 > **To unlock it:**
 > 1. Retake the nightly quizzes for your two weakest domains, [Domain] and [Domain], until you score 80% or higher on each. The sessions for each domain are listed at the top of its Domain Cheat Sheet.
@@ -270,7 +270,7 @@ That's the whole list. Any other duty needs the program team's approval first.
 >
 > Hi [First name],
 >
-> Congratulations on your Practice Exam [B/C/D] score. Because it's more than 20 points above your previous practice exam, we have a short, friendly call with everyone in that situation before releasing the voucher, about how you prepared. Reply with two times that work for you this week.
+> Congratulations on your Practice Exam [B/C/D] score. Because it's more than 20 percentage points above your previous practice exam, we have a short, friendly call with everyone in that situation before releasing the voucher, about how you prepared. Reply with two times that work for you this week.
 >
 > [Program team name], DevLeague
 
@@ -286,12 +286,12 @@ That's the whole list. Any other duty needs the program team's approval first.
 
 ## Appendix B: Study Plan Template
 
-*One page per student. Domain scores come from the gradebook's domain items for Exam B (or C; for a student who missed Exam B, Exam A).*
+*One page per student. Domain scores come from the gradebook's domain items for Exam B (for a student who missed Exam B and didn't ask for a makeup, use Exam A).*
 
 | | |
 |---|---|
 | Student | [Name] |
-| Exam and score | Practice Exam [B/C]: [score] of 90 (bar: 77) |
+| Exam and score | Practice Exam [A/B]: [score] of 90 (bar: 77 of 90) |
 | Domain scores | D1 [ ]/21 · D2 [ ]/18 · D3 [ ]/17 · D4 [ ]/13 · D5 [ ]/21 |
 | Weakest domains | [Domain] ([%]) and [Domain] ([%]) |
 | Exam C window | [date] to [date] |
