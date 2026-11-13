@@ -10,10 +10,17 @@ def shade(cell, hexcolor):
     tcPr = cell._tc.get_or_add_tcPr(); s = OxmlElement('w:shd')
     s.set(qn('w:val'), 'clear'); s.set(qn('w:color'), 'auto'); s.set(qn('w:fill'), hexcolor); tcPr.append(s)
 def add_runs(p, text, color=DARK, size=None, italic=False):
-    for part in re.split(r'(\*\*[^*]+\*\*)', text):
+    """**bold**, `code` (Consolas, no backticks) and *italic* inline."""
+    for part in re.split(r'(\*\*[^*]+\*\*|`[^`]+`|(?<![\w*])\*[^*\s][^*]*\*(?![\w*]))', text):
         if not part: continue
-        bold = part.startswith('**'); r = p.add_run(part.strip('*') if bold else part)
-        r.bold = bold; r.italic = italic; r.font.color.rgb = color
+        if part.startswith('`') and part.endswith('`') and len(part) > 1:
+            r = p.add_run(part[1:-1]); r.font.name = 'Consolas'; r._element.rPr.rFonts.set(qn('w:hAnsi'), 'Consolas')
+            r.font.color.rgb = RGBColor(0x12, 0x4E, 0x58); r.italic = italic
+            if size: r.font.size = Pt(size - 0.5)
+            continue
+        bold = part.startswith('**'); ital = not bold and len(part) > 2 and part[0] == '*' and part[-1] == '*'
+        r = p.add_run(part[2:-2] if bold else part[1:-1] if ital else part)
+        r.bold = bold; r.italic = italic or ital; r.font.color.rgb = color
         if size: r.font.size = Pt(size)
 def new_list(d):
     # each numbered list restarts at 1
@@ -59,11 +66,23 @@ def build(md, out, logo=False, compact=False):
             h = d.add_heading(m.group(2), level=len(m.group(1)))
             if logo and len(m.group(1)) == 1 and i < 3: h.alignment = WD_ALIGN_PARAGRAPH.CENTER
             i += 1; continue
+        m = re.match(r'^!\[([^\]]*)\]\(([^)\s]+)\)(?:\{width=([\d.]+)\})?$', ln)
+        if m:  # ![caption](path){width=5}: picture centred, caption under it; path relative to the .md file
+            ip = m.group(2) if os.path.isabs(m.group(2)) else os.path.join(os.path.dirname(os.path.abspath(md)), m.group(2))
+            p = d.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER; p.paragraph_format.keep_with_next = True
+            if os.path.exists(ip): p.add_run().add_picture(ip, width=Inches(float(m.group(3) or 5.5)))
+            else: r = p.add_run(f'[screenshot missing: {m.group(2)}]'); r.bold = True; r.font.color.rgb = RGBColor(0xC0, 0x39, 0x2B)
+            if m.group(1):
+                c = d.add_paragraph(); c.alignment = WD_ALIGN_PARAGRAPH.CENTER; add_runs(c, m.group(1), GRAY, 9, True)
+            i += 1; continue
         if re.match(r'^\[SLIDE [\w.]+\]$', ln):
             p = d.add_paragraph(); r = p.add_run(ln); r.bold = True; r.font.color.rgb = TEAL; r.font.size = Pt(9)
             p.paragraph_format.space_after = Pt(2); i += 1; continue
         if re.match(r'^\*[^*].*\*$', ln):
             add_runs(d.add_paragraph(), ln.strip('*'), GRAY, 9, True); i += 1; continue
+        if re.match(r'^- \[[ xX]\] ', ln):  # checklist item: box, no bullet
+            p = d.add_paragraph(); p.paragraph_format.left_indent = Inches(0.25); p.paragraph_format.first_line_indent = Inches(-0.25)
+            r = p.add_run('\u2611  ' if ln[3] in 'xX' else '\u2610  '); r.font.color.rgb = TEAL; add_runs(p, ln[6:]); i += 1; continue
         if ln.startswith('- '): add_runs(d.add_paragraph(style='List Bullet'), ln[2:]); i += 1; continue
         if re.match(r'^\d+\. ', ln):
             p = d.add_paragraph(style='List Number'); add_runs(p, re.sub(r'^\d+\. ', '', ln))
@@ -83,6 +102,9 @@ def build(md, out, logo=False, compact=False):
                 if not re.match(r'^\|[\s:|-]*-[\s:|-]*$', lines[i].rstrip()): rows.append([c.strip() for c in lines[i].strip('|').split('|')])
                 i += 1
             t = d.add_table(rows=len(rows), cols=len(rows[0])); t.style = 'Table Grid'
+            for tr in t.rows:  # a row never splits across a page break; the header row repeats
+                trPr = tr._tr.get_or_add_trPr(); trPr.append(OxmlElement('w:cantSplit'))
+            hdr = t.rows[0]._tr.get_or_add_trPr(); hdr.append(OxmlElement('w:tblHeader'))
             for ri, row in enumerate(rows):
                 for ci, val in enumerate(row):
                     c = t.rows[ri].cells[ci]; c.paragraphs[0].text = ''

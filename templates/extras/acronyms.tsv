@@ -1,0 +1,4 @@
+acronym	meaning	note	session
+AAA	Authentication, Authorization and Accounting	Who you are, what you may do, and a record of what you did	13
+ACL	Access Control List	Ordered permit/deny rules; first match wins, implicit deny at the end	14
+AES	Advanced Encryption Standard	Symmetric cipher used by WPA2/WPA3 (CCMP, GCMP) and IPsec	9

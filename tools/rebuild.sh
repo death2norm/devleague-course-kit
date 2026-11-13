@@ -2,7 +2,8 @@
 # Rebuild one session package from the workspace sources.
 #   tools/rebuild.sh NN            lab/debrief minutes come from sessions.tsv
 #   tools/rebuild.sh NN 50 20      override (and save) the lab/debrief minutes
-# Settings: course.env (PREFIX, COURSE_NAME, DECK_LABEL, INSTRUCTOR, WORKSPACE) in the workspace root.
+# Settings: course.env (PREFIX, COURSE_NAME, DECK_LABEL, EXAM, INSTRUCTOR, WORKSPACE, HANDOUT_STYLE) in the workspace root.
+# HANDOUT_STYLE: A polished, B cheat sheet (default), C study guide (tools/build_handout.py), or plain (build_docx.py, the pre-Nov 12 look).
 # Special sessions (sessions.tsv "builder" column, e.g. build_s18.sh) are handed to their own script.
 # The automatic checks run first; any FAIL stops the build (CHECKS=warn to build anyway and see the list).
 set -e
@@ -40,7 +41,9 @@ python3 $B src/quiz_key_S$n.md out/Instructor/${P}_S${n}_QuizKey.docx
 python3 $B src/moodle_S$n.md out/Moodle/${P}_S${n}_MoodleChecklist.docx
 [ -f src/ptbuild_S$n.md ] && python3 $B src/ptbuild_S$n.md out/Instructor/${P}_S${n}_PacketTracer_BuildSheet.docx
 python3 $B src/worksheet_S$n.md out/Student/${P}_S${n}_LabWorksheet.docx --logo --compact
-python3 $B src/handout_S$n.md $T/${P}_S${n}_StudentHandout.docx --logo --compact
+HS=${HANDOUT_STYLE:-B}; HC=${HANDOUT_COURSE:-${EXAM#CompTIA }}
+if [ "$HS" = plain ]; then python3 $B src/handout_S$n.md $T/${P}_S${n}_StudentHandout.docx --logo --compact
+else python3 tools/build_handout.py src/handout_S$n.md $T/${P}_S${n}_StudentHandout.docx --style $HS --course "$HC" --session $((10#$n)); fi
 python3 $B src/labguide_S$n.md $T/${P}_S${n}_LabGuide.docx --logo --compact
 (cd $T && timeout 200 soffice --headless --convert-to pdf --outdir "$OLDPWD/out/Student" ${P}_S${n}_StudentHandout.docx ${P}_S${n}_LabGuide.docx >/dev/null 2>&1)
 for d in Student Instructor; do for f in pkt/$d/${P}_S${n}_*.pkt; do [ -f "$f" ] && cp "$f" out/$d/; done; done
@@ -50,5 +53,6 @@ for d in Instructor Moodle Presentation Student; do mkdir -p pkg$n/$d; cp out/$d
 cp -r tools pkg$n/_build/; rm -rf pkg$n/_build/tools/__pycache__; cp src/*_S$n* pkg$n/_build/; cp course.env sessions.tsv pkg$n/_build/
 (cd pkg$n && zip -qr ../${P}_S${n}_Package.zip .)
 pages=$(pdfinfo out/Student/${P}_S${n}_StudentHandout.pdf 2>/dev/null | awk '/Pages/{print $2}')
-echo "S$n built: $meta · handout $pages pages · ${P}_S${n}_Package.zip"
-[ "${pages:-0}" -le 2 ] || echo "S$n WARN: handout is $pages pages (limit 2)"
+echo "S$n built: $meta · handout $pages pages (style ${HS}) · ${P}_S${n}_Package.zip"
+python3 tools/pdf_check.py out/Student/${P}_S${n}_LabGuide.pdf || exit 1
+python3 tools/pdf_check.py out/Student/${P}_S${n}_StudentHandout.pdf --pages 2 || exit 1

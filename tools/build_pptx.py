@@ -48,7 +48,7 @@ def field(lines, key):
 def light_frame(s, sid, a):
     s.background.fill.solid(); s.background.fill.fore_color.rgb = WHITE
     pic(s, os.path.join(A, 'shield.png'), 0.55, 0.38, h=0.42)
-    txt(s, 1.02, 0.43, 6, 0.35, [{'runs': [R(f'{a.course}  //  SESSION {a.session}', 10, TEAL, True, MONO)]}])
+    txt(s, 1.02, 0.43, 6, 0.35, [{'runs': [R(f'{a.course}  //  ' + (a.label or f'SESSION {a.session}'), 10, TEAL, True, MONO)]}])
     txt(s, 9.8, 0.43, 3.0, 0.35, [{'runs': [R(sid, 10, MUTED, False, MONO)]}], align=PP_ALIGN.RIGHT)
     rect(s, 0.55, 7.0, 12.23, 0.012, fill=BORDER); pic(s, os.path.join(A, 'logo_light.png'), 0.55, 7.1, h=0.22)
 def headline(s, t):
@@ -57,7 +57,7 @@ def dark_frame(s): pic(s, os.path.join(A, 'bg_dark.png'), 0, 0, 13.333, 7.5)
 def L_title(s, lines, a):
     dark_frame(s); pic(s, os.path.join(A, 'logo_dark.png'), 0.8, 0.75, h=0.75)
     h2 = next((l[3:] for l in lines if l.startswith('## ')), ''); h3 = next((l[4:] for l in lines if l.startswith('### ')), ''); b = dict(kv(lines))
-    txt(s, 0.8, 2.55, 11, 0.4, [{'runs': [R(f'{a.course}  //  SESSION {a.session}', 14, BLUE, True, MONO)]}])
+    txt(s, 0.8, 2.55, 11, 0.4, [{'runs': [R(f'{a.course}  //  ' + (a.label or f'SESSION {a.session}'), 14, BLUE, True, MONO)]}])
     txt(s, 0.8, 3.0, 11.5, 1.3, [{'runs': [R(h2, 50, WHITE, True)]}])
     txt(s, 0.8, 4.3, 10.5, 1.0, [{'runs': [R(h3, 20, ICE)]}])
     grad_rule(s, 0.82, 5.55, 1.6, 0.06)
@@ -78,7 +78,7 @@ def L_two(s, body, a):
     left, right = body.split(':right-column'); left = left.replace(':left-column', '')
     for x, part, tint, color, acc, tag, di in ((0.55, left, TEAL_T, 'teal', TEAL, '// THE CONCEPT', 'shield-check'), (6.78, right, AMBER_T, 'amber', AMBER, '// THE EXAM TRAP', 'triangle-exclamation-point')):
         lines = [l.strip() for l in part.strip().split('\n') if l.strip()]
-        title = next((l[4:] for l in lines if l.startswith('### ')), ''); ic = field(lines, 'icon') or di; w = 6.0
+        title = next((l[4:] for l in lines if l.startswith('### ')), ''); ic = field(lines, 'icon') or di; w = 6.0; tag = field(lines, 'tag') or tag
         rect(s, x, 2.1, w, 4.6, fill=PAPER, line=BORDER, lw=0.75); rect(s, x, 2.1, w, 0.07, fill=acc)
         icon_badge(s, ic, x + 0.35, 2.45, 0.85, tint, color)
         txt(s, x + 1.4, 2.45, w - 1.6, 0.3, [{'runs': [R(tag, 11, acc, True, MONO)]}])
@@ -119,7 +119,7 @@ def script_notes(path):
     return out
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('src'); ap.add_argument('out'); ap.add_argument('--script')
-    ap.add_argument('--course', default=__import__('os').environ.get('DECK_LABEL','DEVLEAGUE')); ap.add_argument('--session', default='01'); ap.add_argument('--instructor', default='Instructor')
+    ap.add_argument('--course', default=__import__('os').environ.get('DECK_LABEL','DEVLEAGUE')); ap.add_argument('--session', default='01'); ap.add_argument('--label', help='replaces SESSION NN on the slides, e.g. "WEEK 0 ORIENTATION"'); ap.add_argument('--instructor', default='Instructor')
     a = ap.parse_args(); notes = script_notes(a.script)
     prs = Presentation(); prs.slide_width = Inches(13.333); prs.slide_height = Inches(7.5)
     chunks = re.split(r'<!-- SLIDE ([\w.]+) -->', open(a.src, encoding='utf-8').read())[1:]

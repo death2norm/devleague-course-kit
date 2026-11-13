@@ -13,6 +13,7 @@ cp -r $R/src/. $W/src/
 cp -r $K/assets/. $W/assets/
 [ -d $R/assets ] && cp -r $R/assets/. $W/assets/
 [ -d $R/pkt ] && cp -r $R/pkt/. $W/pkt/
-for f in course.env sessions.tsv course_lint.tsv; do [ -f $R/$f ] && cp $R/$f $W/; done
+[ -d $R/extras ] && { rm -rf $W/extras; cp -r $R/extras $W/extras; }
+for f in course.env sessions.tsv course_lint.tsv moodle.json; do [ -f $R/$f ] && cp $R/$f $W/; done
 [ -d $W/assets/lucide ] || { git clone -q --depth 1 --filter=blob:none --sparse https://github.com/lucide-icons/lucide.git $W/assets/lucide && git -C $W/assets/lucide sparse-checkout set icons; }
 echo "Workspace ready at $W ($COURSE_NAME, kit $(git -C $K rev-parse --short HEAD 2>/dev/null || echo local))"

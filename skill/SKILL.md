@@ -5,7 +5,7 @@ description: Plan, build, fix, review and package DevLeague courses with the sha
 
 # DevLeague Course Builder (Production Standard v5)
 
-The shared kit (tools, this standard, the playbook, templates, brand assets) is the repo `death2norm/devleague-course-kit`; attach and clone it next to the course repo in every build chat. Every course repo holds only its content plus `course.env`, `sessions.tsv` and `course_lint.tsv`. Course-level steps (plan, reviews, bank, hands-on checks, Moodle import, hand-over) are in the playbook: `devleague-course-kit/docs/playbook.md` (project copy `claude/devleague_course_playbook.md`). Each course has a short status file `claude/<course>_handoff.md`; read it first in every chat, and read the repo's `docs/<course>_history.md` only when you need an older detail.
+The shared kit (tools, this standard, the playbook, templates, brand assets) is the repo `death2norm/devleague-course-kit`; attach and clone it next to the course repo in every build chat. Every course repo holds only its content plus `course.env`, `sessions.tsv` and `course_lint.tsv`. Course-level steps (plan, reviews, bank, course-level extras, hands-on checks, Moodle import, per-cohort runbook, hand-over) are in the playbook: `devleague-course-kit/docs/playbook.md` (project copy `claude/devleague_course_playbook.md`). Each course has a short status file `claude/<course>_handoff.md`; read it first in every chat, and read the repo's `docs/<course>_history.md` only when you need an older detail.
 
 ## Working agreement (Josh)
 - Training is king. Every night is exactly 3:00 published; only student Q&A runs long.
@@ -103,12 +103,12 @@ Callbacks · Exam terms to explain · Practice bank contribution (25 Q: domain/o
 |---|---|
 | Instructor | InstructorScript, RunSheet, LabDebriefKey, QuizKey (.docx); PacketTracer_BuildSheet and Finished .pkt when used |
 | Presentation | SlideDeck.pptx (notes = script), SlideSource.md |
-| Student | StudentHandout.pdf (≤ 2 pages, logo centered top), LabGuide.pdf, LabWorksheet.docx; Starter .pkt when used |
+| Student | StudentHandout.pdf (≤ 2 pages, built by build_handout.py in the course's HANDOUT_STYLE; B = cheat sheet with the check-yourself line), LabGuide.pdf, LabWorksheet.docx; Starter .pkt when used |
 | Moodle | MoodleChecklist.docx, Quiz.gift.txt |
 | _build | tools, the session's sources, course.env, sessions.tsv |
 
 ## QA gates (all before sending)
-checks.py 0 FAIL (WARNs looked at) · qa.py PASS on the script and every .md · handout ≤ 2 pages · render and look at 6 sample slides · run sheet ends 2:53–2:58 · GIFT one `=` and three `~` per question.
+checks.py 0 FAIL (WARNs looked at) · qa.py PASS on the script and every .md · pdf_check.py clean (no markdown leftovers) and handout ≤ 2 pages · render and look at 6 sample slides · run sheet ends 2:53–2:58 · GIFT one `=` and three `~` per question.
 
 ## Course pitfalls
 Each course keeps the mistakes its reviewers caught in `docs/pitfalls.md`; read it before writing a script. Add to it after every review. Forbidden stale wording (old pass marks, retired facts) goes into `course_lint.tsv`, so checks.py catches it everywhere.

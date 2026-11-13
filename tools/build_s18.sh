@@ -15,11 +15,14 @@ python3 $B $T/scr18.md out/Instructor/${P}_S18_InstructorScript.docx
 python3 $B src/runsheet_S18.md out/Instructor/${P}_S18_RunSheet.docx
 python3 $B src/proctoring_S18.md out/Instructor/${P}_S18_ProctoringChecklist.docx
 python3 $B src/moodle_S18.md out/Moodle/${P}_S18_MoodleChecklist.docx
-python3 $B src/handout_S18.md $T/${P}_S18_StudentHandout.docx --logo --compact
+HS=${HANDOUT_STYLE:-B}; HC=${HANDOUT_COURSE:-${EXAM#CompTIA }}
+if [ "$HS" = plain ]; then python3 $B src/handout_S18.md $T/${P}_S18_StudentHandout.docx --logo --compact
+else python3 tools/build_handout.py src/handout_S18.md $T/${P}_S18_StudentHandout.docx --style $HS --course "$HC" --session 18; fi
 (cd $T && timeout 200 soffice --headless --convert-to pdf --outdir "$OLDPWD/out/Student" ${P}_S18_StudentHandout.docx >/dev/null 2>&1)
 cp src/slides_S18.md out/Presentation/${P}_S18_SlideSource.md
 rm -rf pkg18 ${P}_S18_Package.zip; mkdir -p pkg18/_build
 for d in Instructor Moodle Presentation Student; do mkdir -p pkg18/$d; cp out/$d/${P}_S18_* pkg18/$d/; done
 cp -r tools pkg18/_build/; rm -rf pkg18/_build/tools/__pycache__; cp src/*_S18* pkg18/_build/; cp course.env sessions.tsv pkg18/_build/
 (cd pkg18 && zip -qr ../${P}_S18_Package.zip .)
-echo "S18: $(pdfinfo out/Student/${P}_S18_StudentHandout.pdf | grep Pages)"
+echo "S18: $(pdfinfo out/Student/${P}_S18_StudentHandout.pdf | grep Pages) (style ${HS})"
+python3 tools/pdf_check.py out/Student/${P}_S18_StudentHandout.pdf --pages 2 || exit 1

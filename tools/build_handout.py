@@ -69,7 +69,7 @@ def width(t, inches_list, keep=True):
 
 def runs(p, text, color=DARK, size=None, italic=False, keycolor=None):
     """**bold** and `code` inline."""
-    for part in re.split(r'(\*\*[^*]+\*\*|`[^`]+`)', text):
+    for part in re.split(r'(\*\*[^*]+\*\*|`[^`]+`|(?<![\w*])\*[^*\s][^*]*\*(?![\w*]))', text):
         if not part:
             continue
         if part.startswith('`'):
@@ -78,8 +78,9 @@ def runs(p, text, color=DARK, size=None, italic=False, keycolor=None):
             r.font.size = Pt((size or 10) - 1); r.font.color.rgb = RGBColor(0x12, 0x4E, 0x58)
             r._element.rPr.append(el('w:shd', val='clear', color='auto', fill='E8F1F2'))
             continue
-        bold = part.startswith('**'); r = p.add_run(part[2:-2] if bold else part)
-        r.bold = bold; r.italic = italic
+        bold = part.startswith('**'); ital = not bold and len(part) > 2 and part[0] == '*' and part[-1] == '*'
+        r = p.add_run(part[2:-2] if bold else part[1:-1] if ital else part)
+        r.bold = bold; r.italic = italic or ital
         r.font.color.rgb = (keycolor or color) if bold else color
         if size:
             r.font.size = Pt(size)
@@ -111,8 +112,8 @@ def parse(md):
     return title, sub, secs
 
 
-def body(container, lines, size, keycolor):
-    """Render one section's lines into a document or cell."""
+def body(container, lines, size, keycolor, avail=7.1):
+    """Render one section's lines into a document or cell. avail = usable width in inches (tables are sized to it)."""
     first = True; i = 0
     while i < len(lines):
         ln = lines[i]
@@ -124,7 +125,13 @@ def body(container, lines, size, keycolor):
                 if not re.match(r'^\|[\s:|-]*-[\s:|-]*$', lines[i]):
                     rows.append([c.strip() for c in lines[i].strip().strip('|').split('|')])
                 i += 1
-            t = container.add_table(rows=len(rows), cols=len(rows[0]))
+            ncol = max(len(r) for r in rows); rows = [r + [''] * (ncol - len(r)) for r in rows]
+            t = container.add_table(rows=len(rows), cols=ncol)
+            clean = [[re.sub(r'[*`]', '', r[k]) for k in range(ncol)] for r in rows]
+            floor = [0.16 + 0.072 * max(max((len(w) for w in r[k].split()), default=3) for r in clean) for k in range(ncol)]
+            need = [min(40, max(4, max(len(r[k]) for r in clean))) for k in range(ncol)]
+            rest = max(0, avail - sum(floor)); ws = [floor[k] + rest * need[k] / sum(need) for k in range(ncol)]
+            scale = avail / sum(ws); width(t, [w * scale for w in ws], keep=False)
             for ri, row in enumerate(rows):
                 for ci, val in enumerate(row):
                     c = t.rows[ri].cells[ci]; c.paragraphs[0].text = ''; cell_margins(c, 40, 40, 80, 80)
@@ -226,7 +233,7 @@ def build(md, out, style='A', course='Network+ N10-009', session=None):
             t = d.add_table(rows=1, cols=1); width(t, [3.4], keep=len([x for x in lines if x.strip()]) <= 8); c = t.rows[0].cells[0]
             shade(c, 'F6FAFA'); borders(c, left=True, others='single'); cell_margins(c, 90, 90, 150, 120)
             hp = c.paragraphs[0]; r = hp.add_run(h); r.bold = True; r.font.size = Pt(11); r.font.color.rgb = TEAL; para_fmt(hp, 3)
-            body(c, lines, size, TEAL)
+            body(c, lines, size, TEAL, avail=3.4 - 270 / 1440 - 0.02)
             sp = d.add_paragraph(); para_fmt(sp, 4, line=0.8)
         one = d.add_section(0); columns(one, 1)
     else:
@@ -247,12 +254,13 @@ def build(md, out, style='A', course='Network+ N10-009', session=None):
             runs(p, ' '.join(x.lstrip('- ') for x in lines if x.strip()), DARK, 10)
         sp = d.add_paragraph(); para_fmt(sp, 4)
     if style == 'B':
+        t = d.add_table(rows=1, cols=1); width(t, [7.1]); c = t.rows[0].cells[0]
+        shade(c, '2B2F33'); borders(c); cell_margins(c, 90, 90, 180, 140)
+        p = c.paragraphs[0]
         for h, lines in homework:
-            t = d.add_table(rows=1, cols=1); width(t, [7.1]); c = t.rows[0].cells[0]
-            shade(c, '2B2F33'); borders(c); cell_margins(c, 90, 90, 180, 140)
-            p = c.paragraphs[0]; r = p.add_run('TONIGHT’S HOMEWORK   '); r.bold = True; r.font.size = Pt(9); r.font.color.rgb = RGBColor(0x7F, 0xD1, 0xDB)
+            r = p.add_run('TONIGHT’S HOMEWORK   '); r.bold = True; r.font.size = Pt(9); r.font.color.rgb = RGBColor(0x7F, 0xD1, 0xDB)
             runs(p, ' '.join(x.lstrip('- ') for x in lines if x.strip()), WHITE, 10, keycolor=WHITE)
-        p = c.add_paragraph(); para_fmt(p, 0, 3)
+            p = c.add_paragraph(); para_fmt(p, 0, 3)
         r = p.add_run('CHECK YOURSELF   '); r.bold = True; r.font.size = Pt(9); r.font.color.rgb = RGBColor(0x7F, 0xD1, 0xDB)
         runs(p, '    '.join('\u2610 ' + h for h, _ in main if h), WHITE, 9.5)
     footer(d, course, session)
@@ -261,6 +269,6 @@ def build(md, out, style='A', course='Network+ N10-009', session=None):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser(); ap.add_argument('md'); ap.add_argument('out')
-    ap.add_argument('--style', default='A'); ap.add_argument('--course', default='Network+ N10-009')
+    ap.add_argument('--style', default=os.environ.get('HANDOUT_STYLE', 'B')); ap.add_argument('--course', default=os.environ.get('HANDOUT_COURSE', 'Network+ N10-009'))
     ap.add_argument('--session', type=int)
     a = ap.parse_args(); build(a.md, a.out, a.style.upper(), a.course, a.session)

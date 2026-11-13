@@ -1,0 +1,272 @@
+[
+ {
+  "title": "Binary to decimal",
+  "domain": "D1 1.7",
+  "stem": "What is the binary number 10100000 in decimal?",
+  "answers": [
+   [
+    "128",
+    false,
+    "That counts only the leftmost bit. The third bit adds 32."
+   ],
+   [
+    "160",
+    true,
+    "Correct. The bits worth 128 and 32 are on: 128 + 32 = 160."
+   ],
+   [
+    "192",
+    false,
+    "That's 11000000, with the 128 and 64 bits on. Here the second bit is off and the third is on."
+   ],
+   [
+    "80",
+    false,
+    "That's 01010000. Start the values at 128, not 64."
+   ]
+  ]
+ },
+ {
+  "title": "Decimal to binary",
+  "domain": "D1 1.7",
+  "stem": "Which binary number equals the decimal number 10?",
+  "answers": [
+   [
+    "00001100",
+    false,
+    "That's 8 + 4 = 12."
+   ],
+   [
+    "00000101",
+    false,
+    "That's 4 + 1 = 5, half of 10."
+   ],
+   [
+    "00001010",
+    true,
+    "Correct. The bits worth 8 and 2 are on: 8 + 2 = 10."
+   ],
+   [
+    "00010010",
+    false,
+    "That's 16 + 2 = 18."
+   ]
+  ]
+ },
+ {
+  "title": "Bit values in an octet",
+  "domain": "D1 1.7",
+  "stem": "In one octet of an IPv4 address, what are the values of the eight bit positions, from left to right?",
+  "answers": [
+   [
+    "1, 2, 4, 8, 16, 32, 64, 128",
+    false,
+    "Those are the right values in the wrong order. The leftmost bit is the biggest."
+   ],
+   [
+    "128, 64, 32, 16, 8, 4, 2, 1",
+    true,
+    "Correct. Each position is double the one to its right, starting at 128."
+   ],
+   [
+    "255, 128, 64, 32, 16, 8, 4, 2",
+    false,
+    "255 is the value of all eight bits together, not one position."
+   ],
+   [
+    "100, 50, 25, 12, 6, 3, 2, 1",
+    false,
+    "Binary positions double; they don't halve from 100."
+   ]
+  ]
+ },
+ {
+  "title": "Largest octet value",
+  "domain": "D1 1.7",
+  "stem": "What is the largest decimal value one octet of an IPv4 address can hold?",
+  "answers": [
+   [
+    "256",
+    false,
+    "There are 256 possible values, but they run from 0 to 255."
+   ],
+   [
+    "128",
+    false,
+    "128 is just the leftmost bit. All eight bits on is larger."
+   ],
+   [
+    "1024",
+    false,
+    "That needs more than eight bits."
+   ],
+   [
+    "255",
+    true,
+    "Correct. All eight bits on: 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255."
+   ]
+  ]
+ },
+ {
+  "title": "Prefix length",
+  "domain": "D1 1.7",
+  "stem": "A network is written as 192.168.10.0/24. What does the /24 tell you?",
+  "answers": [
+   [
+    "The network has 24 usable host addresses",
+    false,
+    "A /24 actually leaves 8 host bits, which gives 254 usable addresses."
+   ],
+   [
+    "The first 24 bits are the network part",
+    true,
+    "Correct. The prefix length counts the network bits; the remaining 8 bits identify hosts."
+   ],
+   [
+    "The router is at address .24",
+    false,
+    "The prefix length says nothing about where the router is."
+   ],
+   [
+    "The address is in the 24th subnet of the company",
+    false,
+    "It's a count of network bits, not a subnet number."
+   ]
+  ]
+ },
+ {
+  "title": "Mask for a /24",
+  "domain": "D1 1.7",
+  "stem": "Which subnet mask matches a /24 prefix?",
+  "answers": [
+   [
+    "255.255.0.0",
+    false,
+    "That's /16: only two octets of ones."
+   ],
+   [
+    "255.255.255.255",
+    false,
+    "That's /32, a single host."
+   ],
+   [
+    "255.255.255.0",
+    true,
+    "Correct. 24 ones make three full octets of 255, then a 0."
+   ],
+   [
+    "255.255.255.24",
+    false,
+    "A mask is made of ones from the left. 24 is the count of those ones, not an octet value."
+   ]
+  ]
+ },
+ {
+  "title": "Hosts on a /24",
+  "domain": "D1 1.7",
+  "stem": "How many usable host addresses does a /24 network have?",
+  "answers": [
+   [
+    "254",
+    true,
+    "Correct. 8 host bits give 256 addresses; the network address and the broadcast address can't go to hosts, leaving 254."
+   ],
+   [
+    "256",
+    false,
+    "That's every address, including the network and broadcast addresses, which hosts can't use."
+   ],
+   [
+    "255",
+    false,
+    "Two addresses are reserved, not one: the network address and the broadcast address."
+   ],
+   [
+    "24",
+    false,
+    "24 is the number of network bits, not hosts."
+   ]
+  ]
+ },
+ {
+  "title": "Same network or not",
+  "domain": "D1 1.7",
+  "stem": "Two computers have the addresses 10.1.1.20/24 and 10.1.2.20/24. Are they on the same network?",
+  "answers": [
+   [
+    "Yes, because both start with 10.1",
+    false,
+    "With a /24, the first three octets must match. The third octets are 1 and 2."
+   ],
+   [
+    "Yes, because both end in .20",
+    false,
+    "The last octet is the host part. Matching host numbers don't put them on the same network."
+   ],
+   [
+    "It depends on the default gateway",
+    false,
+    "The gateway doesn't change which network an address is on. The address and mask decide that."
+   ],
+   [
+    "No, the third octets differ",
+    true,
+    "Correct. A /24 network uses the first three octets: 10.1.1 and 10.1.2 are different networks, so they need a router between them."
+   ]
+  ]
+ },
+ {
+  "title": "Private address",
+  "domain": "D1 1.7",
+  "stem": "Which of these is a private IPv4 address that a home or office network might use inside?",
+  "answers": [
+   [
+    "8.8.8.8",
+    false,
+    "That's a public address (a well-known public DNS server)."
+   ],
+   [
+    "192.168.1.50",
+    true,
+    "Correct. 192.168.0.0/16 is one of the private ranges, along with 10.0.0.0/8 and 172.16.0.0/12."
+   ],
+   [
+    "200.168.1.50",
+    false,
+    "That's public. The private range is 192.168, not 200.168."
+   ],
+   [
+    "172.32.1.50",
+    false,
+    "Close, but the private range is 172.16 to 172.31. 172.32 is public."
+   ]
+  ]
+ },
+ {
+  "title": "No DHCP answer",
+  "domain": "D1 1.7",
+  "stem": "A laptop shows the address 169.254.33.7. What does that usually mean?",
+  "answers": [
+   [
+    "The laptop has a static address set by the help desk",
+    false,
+    "Help desks don't assign this range. It's what a device gives itself."
+   ],
+   [
+    "The laptop is connected to the internet through a VPN",
+    false,
+    "A VPN address comes from the VPN, not this range."
+   ],
+   [
+    "No DHCP server answered its request",
+    true,
+    "Correct. 169.254.x.x is APIPA: the device picked its own address because DHCP didn't respond. Session 4 covers why."
+   ],
+   [
+    "The laptop has an IPv6 address",
+    false,
+    "169.254.33.7 is IPv4. IPv6 addresses use hexadecimal and colons."
+   ]
+  ]
+ }
+]

@@ -9,8 +9,10 @@ One shared kit for every DevLeague course. A course repo holds only its content 
 |---|---|
 | `docs/playbook.md` | Every course-level step, start to finish (plan, build, reviews, bank, hands-on checks, Moodle import, hand-over) |
 | `skill/SKILL.md` | The build standard (Production Standard v5), also saved as the devleague-course-builder skill |
-| `tools/` | Shared build tools: `rebuild.sh`, `build_s18.sh`, `checks.py`, `qa.py`, `meta.py`, `build_pptx.py`, `build_docx.py`, `gift.py`, `run_sheet.py`, `make_assets.py`, `slidelib.py`, `s18_timing.py` |
-| `templates/` | `course.env`, `sessions.tsv`, `course_lint.tsv` examples |
+| `tools/` | Shared build tools: `rebuild.sh`, `build_s18.sh`, `checks.py`, `qa.py`, `meta.py`, `build_pptx.py`, `build_docx.py`, `build_handout.py` (handout layouts A/B/C), `pdf_check.py` (markdown leftovers, page limit), `gift.py`, `run_sheet.py`, `make_assets.py`, `slidelib.py`, `s18_timing.py` |
+| `tools/` (extras) | `build_extras.sh` (all course-level extras), `build_acronyms.py`, `build_pbq_pack.py`, `mixed_reviews.py`, `new_extras.sh` (start a course's extras from the templates) |
+| `tools/moodle/` | `moodle_helper.js` (runs Moodle's own forms in Josh's Chrome), `moodle_plan.py` (steps from `moodle.json`), `moodle_reflections.py` (reflection essays and honor statement) |
+| `templates/` | `course.env`, `sessions.tsv`, `course_lint.tsv`, `moodle.json` examples; `extras/` templates for the handbook, Week 0, quick starts, acronyms, Mixed Reviews and PBQ Practice Pack (see `templates/extras/README.md`) |
 | `assets/` | DevLeague brand images used by every deck and document (logos, shield, dark background); a course can override any of them in its own `assets/` |
 | `setup.sh` | `setup.sh <course repo>`: builds the workspace (kit tools and assets, then the course's own on top) |
 | `new_course.sh` | Makes a new course repo skeleton |
@@ -18,7 +20,9 @@ One shared kit for every DevLeague course. A course repo holds only its content 
 ## A course repo
 | Path | What it is |
 |---|---|
-| `course.env` | PREFIX, COURSE_NAME, DECK_LABEL, EXAM, INSTRUCTOR, WORKSPACE |
+| `course.env` | PREFIX, COURSE_NAME, DECK_LABEL, EXAM, INSTRUCTOR, WORKSPACE, HANDOUT_STYLE (A, B, C or plain) |
+| `moodle.json` | Moodle ids and the extras list for the Moodle tools |
+| `extras/` | Course-level extras sources (Phase 5b) and `shots/` screenshots |
 | `sessions.tsv` | Per session: lab minutes, debrief minutes, special builder (Session 18) |
 | `course_lint.tsv` | Wording that must never appear (stale pass marks, retired facts), checked in every file |
 | `src/` | Session sources (`script_SNN.md`, `slides_SNN.md`, `quiz_SNN.json`, keys, lab files, handout, Moodle checklist) |
@@ -32,7 +36,9 @@ One shared kit for every DevLeague course. A course repo holds only its content 
 ```bash
 ./setup.sh && cd $WORKSPACE          # once per chat
 python3 tools/checks.py              # whole course: FAIL must be fixed, WARN gets a look
-tools/rebuild.sh 07                  # one session: checks, then the package (minutes from sessions.tsv)
+tools/rebuild.sh 07                  # one session: checks, then the package (minutes from sessions.tsv), then pdf_check
+tools/build_extras.sh                # the course-level extras and their zip
+python3 tools/moodle/moodle_plan.py moodle.json   # Moodle steps for the extras
 ```
 
 ## What checks.py looks for (and why)

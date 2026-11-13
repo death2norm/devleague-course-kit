@@ -14,6 +14,7 @@ DECK_LABEL="$deck"
 EXAM="$exam"
 INSTRUCTOR="$inst"
 WORKSPACE="/home/claude/$key"
+HANDOUT_STYLE="B"
 EOT
 printf 'session\tlab\tdebrief\tbuilder\n18\t\t\tbuild_s18.sh\n' > "$D/sessions.tsv"
 cp "$K/templates/course_lint.tsv.example" "$D/course_lint.tsv"
