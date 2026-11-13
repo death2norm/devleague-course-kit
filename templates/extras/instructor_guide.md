@@ -2,7 +2,7 @@
 
 # DevLeague {{COURSE_NAME}} ({{EXAM_CODE}}) · Instructor and TA Guide
 
-*Internal: instructors, TAs and the program team. Version 1.0, November 13, 2026, adapted from the Security+ guide (version 1.1) with the current program policies and the {{COURSE_NAME}} details. Policies here are the program's approved decisions (Security+ guide decisions of October 28 and the program decisions of November 5 and 11, 2026). Working practices carried over from the Security+ guide's build notes, and anything new for {{COURSE_NAME}}, are marked **(pending)** until Josh approves them; don't promise students anything marked pending. Student-facing rules come from the Student Handbook, Moodle steps from each session's Moodle Checklist and the Practice Bank Moodle Checklist, and timing from each session's Run Sheet. If this guide and one of those ever disagree, those win, and tell the build team.*
+*Internal: instructors, TAs and the program team. Version 1.0, adapted from the Network+ guide (version 1.1) with the current program policies and the {{COURSE_NAME}} details. Everything here is approved: the Security+ guide decisions of October 28, the program decisions of November 5 and 11, and the working practices, email templates and study plan template approved November 13, 2026. Anything new for {{COURSE_NAME}} (beyond these) is marked **(pending)** until Josh approves it; don't promise students anything marked pending. Student-facing rules come from the Student Handbook, Moodle steps from each session's Moodle Checklist and the Practice Bank Moodle Checklist, and timing from each session's Run Sheet. If this guide and one of those ever disagree, those win, and tell the build team.*
 
 ## 1. Who Does What
 
@@ -62,21 +62,21 @@ If chat is quiet, ask once more ("even a guess helps; a wrong answer costs nothi
 
 ## 5. Falling Behind and Things Going Wrong
 
-**Behind schedule.** The first two rules are the Run Sheet's; the rest is **(pending)**. Check the clock at Break 1 against the Run Sheet.
+**Behind schedule.** Check the clock at Break 1 against the Run Sheet.
 - **Up to 5 minutes behind:** no change.
 - **More than 5 minutes behind at Break 1:** shorten the Part 2 practice-question pauses to about 30 seconds. Don't cut a block. Every block carries exam objectives.
 - **Still behind at Break 2:** keep Break 2 and the lab at full length. The debrief absorbs up to 5 minutes; cover the findings in the Lab Debrief Key and save open questions for after 3:00, which students may stay for or leave.
 - **Never** skip Break 1 or Break 2 to catch up.
 
-**Instructor connection drops (pending).** The TA (co-host) keeps the meeting open, tells the room in chat that the instructor is reconnecting, and keeps recording running. If the instructor isn't back within 10 minutes, the TA moves students into their breakout rooms to start the lab early from the Lab page, and the instructor picks up the lecture when back. Lost lecture time is made up from the recording, not by running past 3:00.
+**Instructor connection drops.** The TA (co-host) keeps the meeting open, tells the room in chat that the instructor is reconnecting, and keeps recording running. If the instructor isn't back within 10 minutes, the TA moves students into their breakout rooms to start the lab early from the Lab page, and the instructor picks up the lecture when back. Lost lecture time is made up from the recording, not by running past 3:00.
 
 **Instructor can't teach a session.** The program team reschedules it and tells students in the cohort Slack channel and by email.
 
-**A student's Packet Tracer won't work at class time (pending).** First, the file: "won't open" almost always means a different Packet Tracer version, so after class they install the version listed on the course page (the lab files are built in 9.0.1). Tonight, they join a groupmate who shares their screen, and the group submits one worksheet with everyone's name on it. A student whose computer can't run Packet Tracer at all (a Chromebook, a tablet, or an Apple-silicon Mac where it fails) does every Packet Tracer lab this way; tell the program team so they know before Session 7.
+**A student's Packet Tracer won't work at class time.** First, the file: "won't open" almost always means a different Packet Tracer version, so after class they install the version listed on the course page (the lab files are built in 9.0.1). Tonight, they join a groupmate who shares their screen, and the group submits one worksheet with everyone's name on it. A student whose computer can't run Packet Tracer at all (a Chromebook, a tablet, or an Apple-silicon Mac where it fails) does every Packet Tracer lab this way; tell the program team so they know before Session 7.
 
-**TryHackMe down or the room changed at class time (pending).** Students do the parts of the worksheet that don't need the room, and finish the TryHackMe part later as part of the lab submission. Tell the program team.
+**TryHackMe down or the room changed at class time.** Students do the parts of the worksheet that don't need the room, and finish the TryHackMe part later as part of the lab submission. Tell the program team.
 
-**Moodle down (pending).** The instructor shares the Lab Guide on screen (it's in the session package's Student folder; the .pkt can be sent in Slack) and students submit after Moodle is back.
+**Moodle down.** The instructor shares the Lab Guide on screen (it's in the session package's Student folder; the .pkt can be sent in Slack) and students submit after Moodle is back.
 
 ## 6. The 48-Hour Lab Check
 
@@ -99,12 +99,12 @@ The program team does it with a test student account, 48 hours before each sessi
 
 - Record every session to the Zoom cloud. Cloud recording captures the main room only, not the breakout rooms, which is fine: the lab is done from the Lab page.
 - Recordings are posted in the session's Moodle section, **normally by the next day** (the Student Handbook promises this). The program team adds the link as a URL named "Session ## Recording."
-- **Session 18 (pending):** the exam portion may be trimmed before posting.
+- **Session 18:** the exam portion may be trimmed before posting.
 - Students who miss a session make it up from the recording (Section 8).
 
 ## 8. Nightly Quizzes, Reflections, Labs and Make-Ups
 
-**Nightly quiz.** 10 or 12 questions per session in Moodle (from Session 4 on, plus 2 random subnetting questions), open notes, unlimited attempts, with the trap explained in every wrong answer's feedback. Moodle grades it; nobody reviews individual attempts. The one optional review step **(pending)** takes two minutes: before the next session, the instructor can open the quiz's **Results, then Statistics** and, if one question's facility index is below about 50%, mention its trap in that session's debrief.
+**Nightly quiz.** 10 or 12 questions per session in Moodle (from Session 4 on, plus 2 random subnetting questions), open notes, unlimited attempts, with the trap explained in every wrong answer's feedback. Moodle grades it; nobody reviews individual attempts. The one optional review step takes two minutes: before the next session, the instructor can open the quiz's **Results, then Statistics** and, if one question's facility index is below about 50%, mention its trap in that session's debrief.
 
 **Reflection.** 3 short answers, 5 points each, graded by the **TA** with the program's rubric (approved October 28): 5 points to an answer that addresses the prompt with a reason, 3 to one that answers without a reason, and 0 to a blank or off-topic answer. No written comments are required. Sessions 1–9 use a Moodle quiz with essay questions and Sessions 10–17 an online-text assignment, so the TA grades them in two places.
 
@@ -130,7 +130,7 @@ Every practice exam is 90 questions, 90 minutes, one attempt, drawn from its own
 - Never add Pool questions to a nightly quiz, Mixed Review, Checkpoint or practice file, and never use "include subcategories" when adding random questions.
 - Never name, rank or compare individual students' scores in class. Vouchers and study plans go out by email.
 
-**Missed Exam B.** If the student contacts the program team within 48 hours, add a **user override** on Exam B with new open and close times within 7 days, and a new password sent only to that student (Missed Exam B email, Appendix A). The closed-book rules are the same as Exam C's. A student who lost more than 10 minutes on the night gets the same makeup. **(pending)** Because Exam B has no honor statement item, the makeup email asks the student to reply "I agree" to the honor statement before starting, and the voucher waits for that reply. If they don't contact within 48 hours, add them to **Exam C candidates** with the students below 77 of 90, and build their study plan from their Practice Exam A domain scores.
+**Missed Exam B.** If the student contacts the program team within 48 hours, add a **user override** on Exam B with new open and close times within 7 days, and a new password sent only to that student (Missed Exam B email, Appendix A). The closed-book rules are the same as Exam C's. A student who lost more than 10 minutes on the night gets the same makeup. Because Exam B has no honor statement item, the makeup email asks the student to reply "I agree" to the honor statement before starting, and the voucher waits for that reply. If they don't contact within 48 hours, add them to **Exam C candidates** with the students below 77 of 90, and build their study plan from their Practice Exam A domain scores.
 
 **Camera fails during Exam B.** The student keeps working; the TA tries for 5 minutes in the "Camera help" breakout room. If it can't be fixed, the score counts under the at-home rules (honor statement and the score-jump check). The TA marks it in the incident log and, after the session, sends the honor statement by Slack direct message; the voucher waits until the student replies "I agree" (Proctoring Checklist).
 
@@ -142,7 +142,7 @@ Every practice exam is 90 questions, 90 minutes, one attempt, drawn from its own
 1. Domain scores: sum each student's marks in slots 1–21, 22–39, 40–56, 57–69 and 70–90 (the gradebook's domain items do this). The weakest domain is the lowest percentage, not the lowest raw mark.
 2. **77 of 90 or higher (77.00 in Moodle):** issue the voucher (Section 12).
 3. **Below 77 of 90:** fill in a **Study Plan** (Appendix B) for the two weakest domains and send it with the **Study Plan** email (Appendix A). Add the student to **Exam C candidates**; Exam C opens for them when the plan is sent and closes two weeks later.
-4. **(pending)** Three days before Exam C closes, send the **Exam C Reminder** to anyone who hasn't attempted it.
+4. Three days before Exam C closes, send the **Exam C Reminder** to anyone who hasn't attempted it.
 
 **Score-jump check.** If an at-home score (makeup B, C or D) is more than **20 percentage points** above the student's previous practice exam, the program team holds a short, friendly call about how they prepared before releasing the voucher. It's a conversation, not an accusation. If the explanation is reasonable, release the voucher. If there's a real integrity concern, Josh decides (Proctoring Checklist).
 
@@ -167,7 +167,7 @@ Then the program team adds them to **Exam D candidates** (the TA asks; the TA's 
 
 - **Who qualifies:** 77 of 90 on Practice Exam B, C or D. The score is the only requirement. Attendance, labs and quizzes don't gate it.
 - **How:** mark the student Exam Ready in the program's student records, assign the next CompTIA {{COURSE_NAME}} voucher code, and send the **Voucher Issued** email **within 3 business days** of the qualifying score (after the score-jump call, if one is needed).
-- **Voucher stock:** CompTIA vouchers expire on a fixed date, can't be extended or refunded, and the retake only works for the same exam version. **(pending)** Buy close to when they're issued, and issue the oldest first.
+- **Voucher stock:** CompTIA vouchers expire on a fixed date, can't be extended or refunded, and the retake only works for the same exam version. Buy close to when they're issued, and issue the oldest first.
 - **Retake:** the voucher includes one retake. CompTIA's current policy: no wait before a second attempt, 14 days before a third.
 - **Didn't pass after the retake:** the student gets 3 more months of access to the recordings and practice exams, plus a reduced-price voucher for another attempt (amount set by the program team). The program team arranges both when the student tells them.
 
@@ -194,7 +194,7 @@ That's the whole list. Any other duty needs the program team's approval first.
 
 ## Appendix A: Email Templates
 
-*Program team: replace the bracketed fields. Send from {{SUPPORT_EMAIL}}. Exam D Path, Missed Exam B and Exam D Below 77 are adapted from the approved Security+ templates; Voucher Issued, Study Plan, Exam C Reminder and Score Check Call are new **(pending)**.*
+*Program team: replace the bracketed fields. Send from {{SUPPORT_EMAIL}}. Exam D Path, Missed Exam B and Exam D Below 77 are adapted from the approved Security+ templates; Voucher Issued, Study Plan, Exam C Reminder and Score Check Call were approved November 13, 2026.*
 
 ### Voucher Issued
 
@@ -286,7 +286,7 @@ That's the whole list. Any other duty needs the program team's approval first.
 
 ## Appendix B: Study Plan Template
 
-**(pending)** *One page per student. Domain scores come from the gradebook's domain items for Exam B (or C; for a student who missed Exam B, Exam A).*
+*One page per student. Domain scores come from the gradebook's domain items for Exam B (or C; for a student who missed Exam B, Exam A).*
 
 | | |
 |---|---|
@@ -304,13 +304,6 @@ That's the whole list. Any other duty needs the program team's approval first.
 
 **Help:** your TA, [TA name], in the cohort Slack channel (answers within 24 hours).
 
-## Appendix C: What Needs Josh's Approval (November 13, 2026)
+## Appendix C: Approvals
 
-*Everything marked (pending) above. Approve, change or drop each; then the marks come out.*
-
-1. **Carried over from the Security+ guide's build notes:** the behind-schedule steps after the Run Sheet's rule; the instructor connection-drop rule; the TryHackMe and Moodle outage fallbacks; the optional quiz-statistics look; trimming the Session 18 recording.
-2. **New for {{COURSE_NAME}}:** the Packet Tracer fallback (join a groupmate's screen; one group worksheet) and staying on the listed Packet Tracer version; an "I agree" reply before a makeup Exam B (Exam B has no honor statement item); the Exam C reminder; buying vouchers close to issue and issuing the oldest first.
-3. **New email templates:** Voucher Issued, Study Plan, Exam C Reminder and Score Check Call (Appendix A), and the study plan template (Appendix B). {{COURSE_NAME}}'s Session 18 package has none of these.
-4. **Moodle checklist change to match:** the Session 18 Moodle Checklist says the TA adds students to Exam D candidates, but the TA's role can't manage groups. This guide has the TA ask the program team instead; the checklist line should say the same.
-
-Already settled, and written in as approved: every policy in the Student Handbook and Session 18 guide, a TA in every cohort, the TA grading reflections (5/3/0) and labs, TA Slack answers within 24 hours, no office hours, no backup instructor, and the 20-point score-jump call.
+*Approved on November 13, 2026 (Network+ guide v1.1, for every course): the working practices carried over from the Security+ guide (behind schedule, connection drops, lab-tool, TryHackMe and Moodle outages, the quiz-statistics look, trimming the Session 18 recording), the lab-tool fallback and listed version, the "I agree" reply before a makeup Exam B, the Exam C reminder, voucher buying, the four email templates and the study plan template. The program policies (Student Handbook and Session 18 guide, a TA in every cohort, TA grading, TA Slack answers within 24 hours, no office hours, no backup instructor, the 20-point score-jump call) were approved earlier. List anything new for {{COURSE_NAME}} here, marked (pending), until Josh approves it.*
