@@ -5,6 +5,7 @@
    Load:   (paste this file)            -> window.ML
    Files:  ML.fileInput()               -> adds a hidden <input type=file id="ml-files">; fill it with the
                                            file_upload tool (paths from the workspace), then ML.files() returns them by name.
+   Resource display: set {display: 4} on a File to force download (.pkt, .csv).
    Main calls (all async; each returns plain JSON you can read in the tool result):
      ML.sections(courseid)                         section number -> {id, name}
      ML.cms(courseid)                              every activity: {cmid, mod, name, section}
@@ -185,6 +186,26 @@
     return (await ML.get(`${W}/mod/quiz/edit.php?cmid=${cmid}`)).querySelector('input[name=maxgrade]')?.value;
   };
   // Long loops: the browser tool times out after about 45 s, but the page keeps running; check the result afterwards with ML.cms / ML.slots.
+
+  // Question ids in one category (for fixed questions), then add them all to a quiz, on page 1 in that order.
+  ML.qids = async (courseid, catId, ctx = M.cfg.contextid) => {
+    const d = await ML.get(`${W}/question/edit.php?courseid=${courseid}&cat=${catId},${ctx}&qperpage=200`);
+    return [...d.querySelectorAll('input[type=checkbox][name^="q"]')].map(i => i.name).filter(n => /^q\d+$/.test(n)).map(n => +n.slice(1));
+  };
+  ML.addFixed = async (cmid, ids) => {
+    const b = new URLSearchParams({cmid, sesskey: sk(), add: 'Add selected questions to the quiz', addonpage: 0});
+    ids.forEach(i => b.append('q' + i, '1'));
+    await fetch(`${W}/mod/quiz/edit.php?cmid=${cmid}`, {method: 'POST', body: b, credentials: 'same-origin'});
+    return (await ML.slots(cmid)).length;
+  };
+  // Move an activity to sit just before another one (sectionid from core_courseformat_get_state, not the section number).
+  ML.moveBefore = async (courseid, cmid, targetcmid, sectionid) => {
+    const r = await fetch(`${W}/lib/ajax/service.php?sesskey=${sk()}&info=core_courseformat_update_course`, {method: 'POST',
+      body: JSON.stringify([{index: 0, methodname: 'core_courseformat_update_course', args: {action: 'cm_move', courseid, ids: [cmid], targetsectionid: sectionid, targetcmid}}])});
+    const j = await r.json(); return j[0].error ? {error: j[0].exception?.message} : {ok: cmid};
+  };
+  // Glossary note: copying settings from Security+ turns "allow duplicate entries" off. Set {allowduplicatedentries: 1}
+  // with ML.update before importing if an acronym has two meanings (Network+: PDU, STP), or the second one is rejected.
 
   // ---------- glossary ----------
   ML.importGlossary = async (cmid, file) => {

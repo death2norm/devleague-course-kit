@@ -36,7 +36,7 @@ for e in cfg['extras']:
         src = need(e.get('file') or e.get('html'))
         print(f"- Section {e['section']}: {e['mod']} \"{e['name']}\" from {src}" + (f" (settings like cmid {e['model_cmid']})" if e.get('model_cmid') else ''))
         if js and e['mod'] == 'resource':
-            print(f"  await ML.addModule({C}, {e['section']}, 'resource', {{name: '{e['name']}', display: {5 if e.get('display') == 'download' else 0}, 'introeditor[text]': ''}}, {{files: [ML.file('{os.path.basename(src)}')]}})")
+            print(f"  await ML.addModule({C}, {e['section']}, 'resource', {{name: '{e['name']}', display: {4 if e.get('display') == 'download' else 0}, 'introeditor[text]': ''}}, {{files: [ML.file('{os.path.basename(src)}')]}})")
 print('\n## 3. Quizzes')
 for e in cfg['extras']:
     if e['mod'] != 'quiz': continue
