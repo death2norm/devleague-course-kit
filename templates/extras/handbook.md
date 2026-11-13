@@ -94,7 +94,7 @@ If your score on an at-home exam is more than 20 percentage points above your pr
 ## Academic Integrity
 
 - Practice exams are **closed book**: no notes, other people, other tabs, websites or AI tools.
-- At-home exams start with an **honor statement** you agree to before the first question.
+- Practice Exams C and D start with an **honor statement** you agree to before the first question. For a makeup Exam B, or an Exam B counted under the at-home rules, you agree to it by replying "I agree" before your voucher is released.
 - Don't copy, photograph or share practice exam questions. The pools are sealed so every future student gets a fair test, and the questions only predict your real score if you haven't seen them before.
 - Nightly quizzes, Mixed Reviews and the PBQ practice are for learning. Use your notes and the recordings if you like. They don't count toward the voucher.
 - Breaking these rules can cost you the voucher. We'd much rather you ask for help.
