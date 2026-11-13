@@ -30,7 +30,7 @@ E = []
 for r in rows:
     d = f"<p><strong>{html.escape(r['meaning'])}</strong></p>"
     if r.get('note'): d += f"<p>{html.escape(r['note'])}</p>"
-    if r.get('session'): d += f"<p><em>Session {html.escape(r['session'])}</em></p>"
+    if r.get('session') and r['session'] != '—': d += f"<p><em>Session {html.escape(r['session'])}</em></p>"
     E.append(f"<ENTRY><CONCEPT>{html.escape(r['acronym'])}</CONCEPT><DEFINITION>{html.escape(d)}</DEFINITION><FORMAT>1</FORMAT>"
              "<USEDYNALINK>0</USEDYNALINK><CASESENSITIVE>1</CASESENSITIVE><FULLMATCH>1</FULLMATCH><TEACHERENTRY>1</TEACHERENTRY></ENTRY>")
 xml = ('<?xml version="1.0" encoding="UTF-8"?>\n<GLOSSARY><INFO>'
@@ -43,7 +43,7 @@ open(os.path.join(a.out, f'{P}_Acronym_Glossary.moodle.xml'), 'w', encoding='utf
 
 # 2. Printable glossary (markdown for build_docx.py), grouped by first letter
 L = [f'# {NAME} Acronym Glossary', '',
-     f'*{EXAM} · {len(rows)} acronyms the course uses, each with a one-line note and the session that teaches it · DevLeague*', '']
+     f'*{EXAM} · {len(rows)} acronyms, each with a one-line note and the session that teaches it (a dash means reference only: you may meet it on the exam, but no session covers it) · DevLeague*', '']
 groups = collections.OrderedDict()
 for r in rows:
     k = key(r)[0][0]; k = k if k.isalpha() else '#'

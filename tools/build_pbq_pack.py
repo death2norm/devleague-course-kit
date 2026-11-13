@@ -85,7 +85,7 @@ for n, q in enumerate(ITEMS, 1):
     if q.get('rows'):
         for g, ch in groups.items():
             ch = sorted(set(ch), key=str.lower)
-            lab = 'Choices' if len(groups) == 1 else f'Choices for column {g}'
+            lab = 'Choices' if len(groups) == 1 else f'Choices for group {g}'
             S += [f'**{lab}:** ' + ' · '.join(ch), '']
         S += ['| ' + ' | '.join(q['header']) + ' |', '|' + '---|' * len(q['header'])]
         S += ['| ' + ' | '.join(GAP.sub('________', c) for c in r) + ' |' for r in q['rows']]
