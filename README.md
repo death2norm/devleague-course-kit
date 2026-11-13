@@ -10,9 +10,9 @@ One shared kit for every DevLeague course. A course repo holds only its content 
 | `docs/playbook.md` | Every course-level step, start to finish (plan, build, reviews, bank, hands-on checks, Moodle import, hand-over) |
 | `skill/SKILL.md` | The build standard (Production Standard v5), also saved as the devleague-course-builder skill |
 | `tools/` | Shared build tools: `rebuild.sh`, `build_s18.sh`, `checks.py`, `qa.py`, `meta.py`, `build_pptx.py`, `build_docx.py`, `build_handout.py` (handout layouts A/B/C), `pdf_check.py` (markdown leftovers, page limit), `gift.py`, `run_sheet.py`, `make_assets.py`, `slidelib.py`, `s18_timing.py` |
-| `tools/` (extras) | `build_extras.sh` (all course-level extras), `build_acronyms.py`, `build_pbq_pack.py`, `mixed_reviews.py`, `new_extras.sh` (start a course's extras from the templates) |
+| `tools/` (extras) | `build_extras.sh` (all course-level extras, with a completeness check against the Security+ set), `build_acronyms.py`, `build_pbq_pack.py`, `mixed_reviews.py`, `trap_extract.py` and `build_trap_atlas.py` (Trap Atlas), `coverage_matrix.py` (objective coverage), `new_extras.sh` (start a course's extras from the templates) |
 | `tools/moodle/` | `moodle_helper.js` (runs Moodle's own forms in Josh's Chrome), `moodle_plan.py` (steps from `moodle.json`), `moodle_reflections.py` (reflection essays and honor statement) |
-| `templates/` | `course.env`, `sessions.tsv`, `course_lint.tsv`, `moodle.json` examples; `extras/` templates for the handbook, Week 0, quick starts, acronyms, Mixed Reviews and PBQ Practice Pack (see `templates/extras/README.md`) |
+| `templates/` | `course.env`, `sessions.tsv`, `course_lint.tsv`, `moodle.json` examples; `extras/` templates for the handbook, Week 0, quick starts, acronyms, Mixed Reviews, PBQ Practice Pack, Trap Atlas, Domain Cheat Sheets, After the Exam, Instructor and TA Guide and the objectives file (see `templates/extras/README.md`) |
 | `assets/` | DevLeague brand images used by every deck and document (logos, shield, dark background); a course can override any of them in its own `assets/` |
 | `setup.sh` | `setup.sh <course repo>`: builds the workspace (kit tools and assets, then the course's own on top) |
 | `new_course.sh` | Makes a new course repo skeleton |

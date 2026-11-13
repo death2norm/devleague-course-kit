@@ -72,7 +72,7 @@ A decision that can't be undone (deleting, emailing students, making a course vi
 
 ## Phase 5b: Course-level extras (every course gets them)
 
-Security+ had these from the start; Network+ got them on Nov 12. Start from the templates, so a new course gets all of them by default.
+Security+ had these from the start; Network+ got most of them on Nov 12 and missed four (the Instructor and TA Guide, the Domain Cheat Sheets and Trap Atlas, the After the Exam guide and the Coverage Matrix) until Nov 13. Start from the templates, so a new course gets all of them by default, and don't call a course complete until `build_extras.sh` prints "Extras complete" with no warnings.
 
 1. `devleague-course-kit/tools/new_extras.sh <course repo>` makes `extras/` from `templates/extras/` (and `moodle.json` from its template). `templates/extras/README.md` lists what to rewrite per course.
 2. Write the course's versions:
@@ -82,8 +82,10 @@ Security+ had these from the start; Network+ got them on Nov 12. Start from the 
    - **Acronym set:** `acronyms.tsv` (meanings and notes in our own words), printable glossary with the interest-list back page, matching drills, flashcards CSV, Moodle glossary.
    - **Mixed Reviews 1–5 and the Week 3 Checkpoint:** `mixed_reviews.tsv`; the build fails if a draw is bigger than a session's quiz.
    - **PBQ Practice Pack:** about 10 drag-and-drop PBQs (`pbq_pack.py`), Moodle XML, printable PDF and key; never a copy of a workshop or bank item.
-3. `tools/build_extras.sh` builds everything into `out/Course/` and `<Prefix>_CourseExtras_<date>.zip`, and runs the PDF check.
-4. Independent review of the extras (facts, every PBQ answer traced, policy wording against the decisions file), then fixes.
+   - **Study aids:** `domains.tsv`; the **Trap Atlas** from `traps.tsv` (start with `tools/trap_extract.py src`, then condense every trap in our own words); **Domain Cheat Sheets** (`cheat_sheets.md`, one page per domain, from the handouts); the **After the Exam** guide (CompTIA facts checked on the day).
+   - **Staff:** the **Instructor and TA Guide** (`instructor_guide.md`: policies from the handbook, Session 18 roles from the Proctoring Checklist, email templates and the study plan template) and the **Objective Coverage Matrix** (generated from `objectives.md`, slide tags, quizzes and the bank pools; fix every Gap before launch).
+3. `tools/build_extras.sh` checks that every item is present and free of `{{ }}` placeholders, builds everything into `out/Course/` and `<Prefix>_CourseExtras_<date>.zip`, and runs the PDF check. It warns if the cheat sheets run past one page per domain or the scripts have trap paragraphs the atlas lacks.
+4. Independent review of the extras (facts, every PBQ answer traced, a sample of Trap Atlas rows against the scripts, cheat-sheet facts, the instructor guide's policies against the handbook and Session 18 docs), then fixes.
 5. Moodle (Phase 7, extras steps) and the test-student pass.
 
 ## Phase 6: Hands-on checks (Josh's computer and Chrome)
@@ -105,12 +107,12 @@ The site is learn.devleague.com (Moodle 4.5, Moove theme). There is no server ac
 7. **Completion and enrolment:** view for files, submit for labs, an attempt for reflections and PBQ quizzes, a grade for exam-style quizzes, none on practice items. Manual enrolment on; self-enrolment and guest access off; no content change notifications.
 8. **Test-student pass:** enrol the test account as Student, use "Log in as," make the course visible only for the test, then check: session materials show, hidden items stay hidden, one quiz attempt scores and shows feedback, a drag-and-drop PBQ saves, a random-draw quiz starts, Practice Exam A shows 90 minutes and 1 attempt, a lab shows "Add submission," the grades page shows no totals. Hide the course again.
 9. **Per cohort:** follow the per-cohort runbook below.
-10. **Extras (Phase 5b):** import the warm-up, acronym drills and PBQ Practice Pack questions; add Start Here files, the welcome page and the Week 0 Warm-Up; Mixed Reviews 1–5 at the end of Sessions 3, 6, 9, 12 and 15 and the Week 3 Checkpoint in Session 9; the PBQ Practice Pack quiz and printable in Session 17; the glossary, printable glossary, drills and flashcards in Course Resources. Practice items: Practice (not counted), unlimited attempts, no completion.
+10. **Extras (Phase 5b):** import the warm-up, acronym drills and PBQ Practice Pack questions; add Start Here files, the welcome page and the Week 0 Warm-Up; Mixed Reviews 1–5 at the end of Sessions 3, 6, 9, 12 and 15 and the Week 3 Checkpoint in Session 9; the PBQ Practice Pack quiz and printable in Session 17; After the Exam in Session 18; the glossary, printable glossary, drills, flashcards, Domain Cheat Sheets and Trap Atlas in Course Resources. The Instructor and TA Guide and the Coverage Matrix are staff files: they go to the instructor, TA and program team, not into Moodle. Practice items: Practice (not counted), unlimited attempts, no completion.
 
 **Moodle tools (kit `tools/moodle/`), driven by the course's `moodle.json`:**
 - `moodle.json` (course repo): course id, model course, question root, context id, section numbers, the first session-quiz category id, practice-exam draws, and the extras list (each item's section, type, file and the Security+ activity to copy settings from).
 - `moodle_plan.py`: prints the steps in order from `moodle.json` and checks every file exists (`--js` adds the helper calls).
-- `moodle_helper.js`: paste into Josh's Chrome (Claude in Chrome's JavaScript tool) on any Moodle page; it drives Moodle's own forms with his session: question imports, new activities with files, copy settings from a model activity, random slots, slot listing, glossary import. Files go in through a hidden file input filled by the browser's file upload tool. It never changes site settings.
+- `moodle_helper.js`: load into Josh's Chrome on any Moodle page (quickest: add a file input with the JavaScript tool, put the helper in it with the file-upload tool from the workspace, then `(0,eval)(await input.files[0].text())`; pasting the 15 KB also works); it drives Moodle's own forms with his session: question imports, new activities with files, copy settings from a model activity, random slots, slot listing, glossary import. Files go in through a hidden file input filled by the browser's file upload tool. It never changes site settings.
 - `moodle_reflections.py`: the reflection essays and the honor statement, from the session Moodle checklists.
 - `lab_html.py`: the lab guides as clean HTML for the lab descriptions (pasting raw markdown flattens the lists).
 
@@ -126,6 +128,8 @@ The site is learn.devleague.com (Moodle 4.5, Moove theme). There is no server ac
 - [ ] TryHackMe Premium seats bought and invites ready (Ubol); Zoom meeting and breakout groups set; Slack channel made; TA hired and given a Moodle account.
 - [ ] Vouchers in hand or ordered for the cohort size (Josh).
 - [ ] Enrollment agreement signed by each student (refund terms match the handbook).
+- [ ] Staff have the Instructor and TA Guide (latest version) and know their Section 14 duties; the program team has its email templates and study plan template (Appendices A and B).
+- [ ] `build_extras.sh` still prints "Extras complete" with no warnings, and the Coverage Matrix shows no Gaps.
 
 **Moodle course copy:**
 - [ ] Copy the master without user data (Backup and Restore, or Import). Name `<Course> Cohort N`, start and end dates set, still hidden.

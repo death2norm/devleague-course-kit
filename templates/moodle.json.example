@@ -6,30 +6,221 @@
   "model_course_id": 43,
   "question_root": "DevLeague <Course>",
   "context_id": 0,
-  "sections": {"start": 0, "session_first": 1, "session_last": 18, "practice_exams": 19, "resources": 20},
-  "session_quiz_category": {"first_id": 0, "pattern": "DevLeague <Course>/Session NN"},
-  "grade_categories": {"labs": "Labs", "quizzes": "Session Quizzes", "reflections": "Reflections", "exams": "Practice Exams", "practice": "Practice (not counted)"},
-  "practice_exam_draws": {"D1": 21, "D2": 18, "D3": 17, "D4": 13, "D5": 21},
+  "sections": {
+    "start": 0,
+    "session_first": 1,
+    "session_last": 18,
+    "practice_exams": 19,
+    "resources": 20
+  },
+  "session_quiz_category": {
+    "first_id": 0,
+    "pattern": "DevLeague <Course>/Session NN"
+  },
+  "grade_categories": {
+    "labs": "Labs",
+    "quizzes": "Session Quizzes",
+    "reflections": "Reflections",
+    "exams": "Practice Exams",
+    "practice": "Practice (not counted)"
+  },
+  "practice_exam_draws": {
+    "D1": 21,
+    "D2": 18,
+    "D3": 17,
+    "D4": 13,
+    "D5": 21
+  },
   "grade_to_pass": 77,
   "extras": [
-    {"key": "welcome", "section": 0, "mod": "page", "name": "Welcome to DevLeague <Course>", "html": "out/Course/Moodle/<Prefix>_Welcome_Page.html", "model_cmid": null},
-    {"key": "handbook", "section": 0, "mod": "resource", "name": "Student Handbook", "file": "out/Course/Student/<Prefix>_Student_Handbook.pdf", "model_cmid": 2130},
-    {"key": "week0", "section": 0, "mod": "resource", "name": "Week 0 Checklist", "file": "out/Course/Student/<Prefix>_Week0_Checklist.pdf", "model_cmid": 2131},
-    {"key": "ptqs", "section": 0, "mod": "resource", "name": "<Lab tool> Quick Start", "file": "out/Course/Student/<Prefix>_QuickStart_PacketTracer.pdf", "model_cmid": 2130},
-    {"key": "thmqs", "section": 0, "mod": "resource", "name": "TryHackMe Quick Start", "file": "out/Course/Student/<Prefix>_QuickStart_TryHackMe.pdf", "model_cmid": 2130},
-    {"key": "testfile", "section": 0, "mod": "resource", "name": "<Lab tool> Test File (Week 0)", "file": "out/Course/Student/<Prefix>_W0_TestFile.pkt", "model_cmid": 2130, "display": "download"},
-    {"key": "warmup", "section": 0, "mod": "quiz", "name": "Week 0 Warm-Up", "import": "out/Course/Moodle/<Prefix>_Week0_WarmUp.gift.txt", "category": "Week 0 Warm-Up", "fixed_all": true, "model_cmid": 2135},
-    {"key": "mr1", "section": 3, "mod": "quiz", "name": "Mixed Review 1", "plan_row": "Mixed Review 1", "model_cmid": 2135},
-    {"key": "mr2", "section": 6, "mod": "quiz", "name": "Mixed Review 2", "plan_row": "Mixed Review 2", "model_cmid": 2136},
-    {"key": "mr3", "section": 9, "mod": "quiz", "name": "Mixed Review 3", "plan_row": "Mixed Review 3", "model_cmid": 2137},
-    {"key": "checkpoint", "section": 9, "mod": "quiz", "name": "Week 3 Checkpoint: Sessions 1–9", "plan_row": "Week 3 Checkpoint: Sessions 1–9", "model_cmid": 2140},
-    {"key": "mr4", "section": 12, "mod": "quiz", "name": "Mixed Review 4", "plan_row": "Mixed Review 4", "model_cmid": 2138},
-    {"key": "mr5", "section": 15, "mod": "quiz", "name": "Mixed Review 5", "plan_row": "Mixed Review 5", "model_cmid": 2139},
-    {"key": "pbqpack", "section": 17, "mod": "quiz", "name": "PBQ Practice Pack", "import": "out/Course/Moodle/<Prefix>_PBQ_Practice_Pack.moodle.xml", "category": "PBQ Practice Pack", "fixed_all": true, "printable": "out/Course/Student/<Prefix>_PBQ_Practice_Pack.pdf", "model_cmid": null},
-    {"key": "glossary", "section": 20, "mod": "glossary", "name": "<Course> Acronyms", "import_glossary": "out/Course/Moodle/<Prefix>_Acronym_Glossary.moodle.xml", "model_cmid": 2141},
-    {"key": "glossary_pdf", "section": 20, "mod": "resource", "name": "Acronym Glossary (Printable)", "file": "out/Course/Student/<Prefix>_Acronym_Glossary.pdf", "model_cmid": 2130},
-    {"key": "drills", "section": 20, "mod": "quiz", "name": "Acronym Drills", "import": "out/Course/Moodle/<Prefix>_Acronym_Drills.gift.txt", "category": "Acronym Drills", "random": 5, "model_cmid": 2143},
-    {"key": "flashcards", "section": 20, "mod": "resource", "name": "Acronym Flashcards (CSV)", "file": "out/Course/Student/<Prefix>_Acronym_Flashcards.csv", "model_cmid": 2130, "display": "download"}
+    {
+      "key": "welcome",
+      "section": 0,
+      "mod": "page",
+      "name": "Welcome to DevLeague <Course>",
+      "html": "out/Course/Moodle/<Prefix>_Welcome_Page.html",
+      "model_cmid": null
+    },
+    {
+      "key": "handbook",
+      "section": 0,
+      "mod": "resource",
+      "name": "Student Handbook",
+      "file": "out/Course/Student/<Prefix>_Student_Handbook.pdf",
+      "model_cmid": 2130
+    },
+    {
+      "key": "week0",
+      "section": 0,
+      "mod": "resource",
+      "name": "Week 0 Checklist",
+      "file": "out/Course/Student/<Prefix>_Week0_Checklist.pdf",
+      "model_cmid": 2131
+    },
+    {
+      "key": "ptqs",
+      "section": 0,
+      "mod": "resource",
+      "name": "<Lab tool> Quick Start",
+      "file": "out/Course/Student/<Prefix>_QuickStart_PacketTracer.pdf",
+      "model_cmid": 2130
+    },
+    {
+      "key": "thmqs",
+      "section": 0,
+      "mod": "resource",
+      "name": "TryHackMe Quick Start",
+      "file": "out/Course/Student/<Prefix>_QuickStart_TryHackMe.pdf",
+      "model_cmid": 2130
+    },
+    {
+      "key": "testfile",
+      "section": 0,
+      "mod": "resource",
+      "name": "<Lab tool> Test File (Week 0)",
+      "file": "out/Course/Student/<Prefix>_W0_TestFile.pkt",
+      "model_cmid": 2130,
+      "display": "download"
+    },
+    {
+      "key": "warmup",
+      "section": 0,
+      "mod": "quiz",
+      "name": "Week 0 Warm-Up",
+      "import": "out/Course/Moodle/<Prefix>_Week0_WarmUp.gift.txt",
+      "category": "Week 0 Warm-Up",
+      "fixed_all": true,
+      "model_cmid": 2135
+    },
+    {
+      "key": "mr1",
+      "section": 3,
+      "mod": "quiz",
+      "name": "Mixed Review 1",
+      "plan_row": "Mixed Review 1",
+      "model_cmid": 2135
+    },
+    {
+      "key": "mr2",
+      "section": 6,
+      "mod": "quiz",
+      "name": "Mixed Review 2",
+      "plan_row": "Mixed Review 2",
+      "model_cmid": 2136
+    },
+    {
+      "key": "mr3",
+      "section": 9,
+      "mod": "quiz",
+      "name": "Mixed Review 3",
+      "plan_row": "Mixed Review 3",
+      "model_cmid": 2137
+    },
+    {
+      "key": "checkpoint",
+      "section": 9,
+      "mod": "quiz",
+      "name": "Week 3 Checkpoint: Sessions 1–9",
+      "plan_row": "Week 3 Checkpoint: Sessions 1–9",
+      "model_cmid": 2140
+    },
+    {
+      "key": "mr4",
+      "section": 12,
+      "mod": "quiz",
+      "name": "Mixed Review 4",
+      "plan_row": "Mixed Review 4",
+      "model_cmid": 2138
+    },
+    {
+      "key": "mr5",
+      "section": 15,
+      "mod": "quiz",
+      "name": "Mixed Review 5",
+      "plan_row": "Mixed Review 5",
+      "model_cmid": 2139
+    },
+    {
+      "key": "pbqpack",
+      "section": 17,
+      "mod": "quiz",
+      "name": "PBQ Practice Pack",
+      "import": "out/Course/Moodle/<Prefix>_PBQ_Practice_Pack.moodle.xml",
+      "category": "PBQ Practice Pack",
+      "fixed_all": true,
+      "printable": "out/Course/Student/<Prefix>_PBQ_Practice_Pack.pdf",
+      "model_cmid": null
+    },
+    {
+      "key": "glossary",
+      "section": 20,
+      "mod": "glossary",
+      "name": "<Course> Acronyms",
+      "import_glossary": "out/Course/Moodle/<Prefix>_Acronym_Glossary.moodle.xml",
+      "model_cmid": 2141
+    },
+    {
+      "key": "glossary_pdf",
+      "section": 20,
+      "mod": "resource",
+      "name": "Acronym Glossary (Printable)",
+      "file": "out/Course/Student/<Prefix>_Acronym_Glossary.pdf",
+      "model_cmid": 2130
+    },
+    {
+      "key": "drills",
+      "section": 20,
+      "mod": "quiz",
+      "name": "Acronym Drills",
+      "import": "out/Course/Moodle/<Prefix>_Acronym_Drills.gift.txt",
+      "category": "Acronym Drills",
+      "random": 5,
+      "model_cmid": 2143
+    },
+    {
+      "key": "flashcards",
+      "section": 20,
+      "mod": "resource",
+      "name": "Acronym Flashcards (CSV)",
+      "file": "out/Course/Student/<Prefix>_Acronym_Flashcards.csv",
+      "model_cmid": 2130,
+      "display": "download"
+    },
+    {
+      "key": "cheatsheets",
+      "section": 20,
+      "mod": "resource",
+      "name": "Domain Cheat Sheets",
+      "file": "out/Course/Student/<Prefix>_Domain_Cheat_Sheets.pdf",
+      "model_cmid": null
+    },
+    {
+      "key": "trapatlas",
+      "section": 20,
+      "mod": "resource",
+      "name": "Trap Atlas",
+      "file": "out/Course/Student/<Prefix>_Trap_Atlas.pdf",
+      "model_cmid": null
+    },
+    {
+      "key": "afterexam",
+      "section": 18,
+      "mod": "resource",
+      "name": "After the Exam",
+      "file": "out/Course/Student/<Prefix>_After_The_Exam.pdf",
+      "model_cmid": null
+    }
   ],
-  "per_cohort": ["Zoom link and schedule on the welcome page", "Week 0 slides and recording in Start Here", "Mixed Review and Checkpoint open dates (optional)", "Exam B password the day before Session 18", "Exam A-D open and close times", "Exam C and D candidate groups", "Recording URLs after each class", "Course survey URL in Session 18", "TA account"]
+  "per_cohort": [
+    "Zoom link and schedule on the welcome page",
+    "Week 0 slides and recording in Start Here",
+    "Mixed Review and Checkpoint open dates (optional)",
+    "Exam B password the day before Session 18",
+    "Exam A-D open and close times",
+    "Exam C and D candidate groups",
+    "Recording URLs after each class",
+    "Course survey URL in Session 18",
+    "TA account"
+  ],
+  "_staff_only": "Not uploaded to Moodle: out/Course/Instructor/<Prefix>_Instructor_TA_Guide.docx and <Prefix>_Coverage_Matrix.docx go to the instructor, TA and program team by Josh."
 }

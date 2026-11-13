@@ -4,14 +4,25 @@
 # Expects in extras/ (start from devleague-course-kit/templates/extras with tools/new_extras.sh):
 #   handbook.md  week0_checklist.md  welcome.md  week0_script.md  week0_slides.md  week0_quiz.json
 #   quickstart_*.md (+ shots/*.png)  acronyms.tsv  acronyms_back.md  mixed_reviews.tsv  pbq_pack.py
+#   domains.tsv  traps.tsv  cheat_sheets.md  after_the_exam.md  instructor_guide.md  objectives.md
+# The full list, and what each one is for, is in templates/extras/README.md. A missing file is reported at
+# the start (Security+ parity check) and its step is skipped, so nothing ships without someone noticing.
 # Output: out/Course/{Student,Instructor,Moodle,Presentation}. Every student PDF goes through pdf_check.py.
 set -e
 cd "${WORKSPACE:-$(cd "$(dirname "$0")/.." && pwd)}"
 set -a; . ./course.env; set +a
 P=$PREFIX; X=extras; O=out/Course; T=${TMPDIR_BUILD:-/tmp/claude-0}/extras; B=tools/build_docx.py
 rm -rf $O $T; mkdir -p $O/{Student,Instructor,Moodle,Presentation} $T
-pdf() { # md -> docx -> pdf in Student (or $3)
-  python3 $B "$1" $T/$2.docx --logo --compact
+# 0. Completeness: every course ships the same course-level set as Security+ (playbook Phase 5b)
+miss=0; for f in handbook.md week0_checklist.md welcome.md week0_script.md week0_slides.md week0_quiz.json \
+  acronyms.tsv acronyms_back.md mixed_reviews.tsv pbq_pack.py domains.tsv traps.tsv cheat_sheets.md \
+  after_the_exam.md instructor_guide.md objectives.md; do [ -f $X/$f ] || { echo "MISSING extras/$f"; miss=1; }; done
+ls $X/quickstart_*.md >/dev/null 2>&1 || { echo "MISSING extras/quickstart_*.md"; miss=1; }
+left=$(grep -l '{{' $X/*.md $X/*.tsv $X/*.json 2>/dev/null || true)
+[ -n "$left" ] && { echo "WARNING: template placeholders {{ }} still in: $left"; miss=1; }
+[ $miss = 0 ] && echo "Extras complete: all course-level items present" || echo "WARNING: course-level extras missing or unfinished (see above)"
+pdf() { # md -> docx -> pdf in Student (or $3); $4 = --tight for one-page reference sheets
+  python3 $B "$1" $T/$2.docx --logo ${4:---compact}
   (cd $T && timeout 200 soffice --headless --convert-to pdf $2.docx >/dev/null 2>&1); cp $T/$2.pdf $O/${3:-Student}/; }
 # 1. Start Here
 pdf $X/handbook.md ${P}_Student_Handbook
@@ -39,7 +50,22 @@ python3 tools/build_pbq_pack.py $X/pbq_pack.py $T
 cp $T/${P}_PBQ_Practice_Pack.moodle.xml $O/Moodle/
 pdf $T/${P}_PBQ_Practice_Pack.md ${P}_PBQ_Practice_Pack
 python3 $B $T/${P}_PBQ_Practice_Pack_Key.md $O/Instructor/${P}_PBQ_Practice_Pack_Key.docx
-# 6. Checks and zip
+# 6. Study aids: Domain Cheat Sheets, Trap Atlas, After the Exam
+if [ -f $X/cheat_sheets.md ]; then pdf $X/cheat_sheets.md ${P}_Domain_Cheat_Sheets Student --tight
+  n=$(pdfinfo $O/Student/${P}_Domain_Cheat_Sheets.pdf | awk '/Pages/{print $2}'); d=$(($(wc -l < $X/domains.tsv) - 1))
+  [ "$n" = "$d" ] || echo "WARNING: Domain Cheat Sheets are $n pages for $d domains; trim until each domain fits one page"; fi
+if [ -f $X/traps.tsv ] && [ -f $X/domains.tsv ]; then
+  python3 tools/build_trap_atlas.py $X/traps.tsv $X/domains.tsv $T/${P}_Trap_Atlas.md --check src
+  pdf $T/${P}_Trap_Atlas.md ${P}_Trap_Atlas; fi
+[ -f $X/after_the_exam.md ] && pdf $X/after_the_exam.md ${P}_After_The_Exam
+# 7. Staff: Instructor and TA Guide, Objective Coverage Matrix
+[ -f $X/instructor_guide.md ] && python3 $B $X/instructor_guide.md $O/Instructor/${P}_Instructor_TA_Guide.docx
+if [ -f $X/objectives.md ]; then
+  bank=""; [ -n "$BANK_ITEMS" ] && [ -f "$BANK_ITEMS" ] && bank="--bank $BANK_ITEMS"
+  [ -n "$BANK_ITEMS" ] && [ -z "$bank" ] && echo "WARNING: BANK_ITEMS=$BANK_ITEMS not found; build the bank first for pool columns"
+  python3 tools/coverage_matrix.py $X/objectives.md src $T/${P}_Coverage_Matrix.md $bank
+  python3 $B $T/${P}_Coverage_Matrix.md $O/Instructor/${P}_Coverage_Matrix.docx; fi
+# 8. Checks and zip
 python3 tools/pdf_check.py $O/Student/*.pdf
 cp -r $X $O/_source; rm -rf $O/_source/__pycache__
 z=${P}_CourseExtras_$(date +%Y-%m-%d).zip; rm -f $z; (cd $O && zip -qr ../../$z .)

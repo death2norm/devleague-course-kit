@@ -1,4 +1,5 @@
-"""python3 build_docx.py input.md output.docx [--logo] [--compact]"""
+"""python3 build_docx.py input.md output.docx [--logo] [--compact | --tight]
+--tight: one-page reference sheets (cheat sheets): narrower margins, 9 pt body, 8 pt tables."""
 import sys, re, os
 from docx import Document
 from docx.shared import Pt, RGBColor, Inches
@@ -29,21 +30,22 @@ def new_list(d):
     abstract = numbering.num_having_numId(sid).abstractNumId.val
     num = numbering.add_num(abstract); num.add_lvlOverride(ilvl=0).add_startOverride(1)
     return num.numId
-def build(md, out, logo=False, compact=False):
+def build(md, out, logo=False, compact=False, tight=False):
+    compact = compact or tight
     d = Document(); sec = d.sections[0]
-    for side in ('left_margin', 'right_margin'): setattr(sec, side, Inches(0.9 if compact else 1))
-    sec.top_margin = sec.bottom_margin = Inches(0.7 if compact else 1)
-    st = d.styles['Normal']; st.font.name = 'Calibri'; st.font.size = Pt(10 if compact else 11)
+    for side in ('left_margin', 'right_margin'): setattr(sec, side, Inches(0.6 if tight else 0.9 if compact else 1))
+    sec.top_margin = sec.bottom_margin = Inches(0.5 if tight else 0.7 if compact else 1)
+    st = d.styles['Normal']; st.font.name = 'Calibri'; st.font.size = Pt(9 if tight else 10 if compact else 11)
     st.element.rPr.rFonts.set(qn('w:eastAsia'), 'Calibri')
-    st.paragraph_format.space_after = Pt(4 if compact else 8); st.paragraph_format.line_spacing = 1.1 if compact else 1.2
+    st.paragraph_format.space_after = Pt(2 if tight else 4 if compact else 8); st.paragraph_format.line_spacing = 1.0 if tight else 1.1 if compact else 1.2
     for i, sz in ((1, 15 if compact else 18), (2, 12 if compact else 14), (3, 11 if compact else 12)):
         h = d.styles[f'Heading {i}']; h.font.name = 'Calibri'; h.font.size = Pt(sz); h.font.bold = True
         h.font.color.rgb = TEAL if i < 3 else DARK
-        h.paragraph_format.space_before = Pt(8 if compact else 14); h.paragraph_format.space_after = Pt(3 if compact else 6)
+        h.paragraph_format.space_before = Pt(5 if tight else 8 if compact else 14); h.paragraph_format.space_after = Pt(3 if compact else 6)
     if logo:
         p = d.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
         lp = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'assets', 'logo_light.png')
-        if os.path.exists(lp): p.add_run().add_picture(lp, width=Inches(2.0))
+        if os.path.exists(lp): p.add_run().add_picture(lp, width=Inches(1.4 if tight else 2.0))
     lines = open(md, encoding='utf-8').read().split('\n'); i = 0; in_list = False; num_id = None
     while i < len(lines):
         ln = lines[i].rstrip()
@@ -105,10 +107,26 @@ def build(md, out, logo=False, compact=False):
             for tr in t.rows:  # a row never splits across a page break; the header row repeats
                 trPr = tr._tr.get_or_add_trPr(); trPr.append(OxmlElement('w:cantSplit'))
             hdr = t.rows[0]._tr.get_or_add_trPr(); hdr.append(OxmlElement('w:tblHeader'))
+            # column widths by content: average text length, never narrower than the longest word
+            sec = d.sections[-1]; avail = sec.page_width - sec.left_margin - sec.right_margin
+            plain = lambda v: re.sub(r'[*`]', '', v)
+            need = []
+            for ci in range(len(rows[0])):
+                col = [plain(r[ci]) for r in rows if ci < len(r)]
+                avg = sum(len(v) for v in col) / len(col)
+                longest = max((len(w) for v in col for w in v.split()), default=1)
+                need.append(max(avg, longest * 1.6, len(col[0]) * 1.3, 4) ** 0.8)
+            t.autofit = False
+            grid = t._tbl.tblGrid.findall(qn('w:gridCol'))
+            for ci, n in enumerate(need):
+                w = int(avail * n / sum(need))
+                if ci < len(grid): grid[ci].set(qn('w:w'), str(int(w / 635)))  # EMU to twips
+                for tr in t.rows:
+                    if ci < len(tr.cells): tr.cells[ci].width = w
             for ri, row in enumerate(rows):
                 for ci, val in enumerate(row):
                     c = t.rows[ri].cells[ci]; c.paragraphs[0].text = ''
-                    add_runs(c.paragraphs[0], val, DARK, 9 if compact else 10)
+                    add_runs(c.paragraphs[0], val, DARK, 8 if tight else 9 if compact else 10)
                     if ri == 0:
                         shade(c, '1B7A8A')
                         for r in c.paragraphs[0].runs: r.bold = True; r.font.color.rgb = RGBColor(255, 255, 255)
@@ -116,4 +134,4 @@ def build(md, out, logo=False, compact=False):
         add_runs(d.add_paragraph(), ln); i += 1
     d.save(out)
 if __name__ == '__main__':
-    a = sys.argv; build(a[1], a[2], logo='--logo' in a, compact='--compact' in a)
+    a = sys.argv; build(a[1], a[2], logo='--logo' in a, compact='--compact' in a, tight='--tight' in a)

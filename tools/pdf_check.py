@@ -19,6 +19,7 @@ PATTERNS = [
     (r'<!--|-->', 'HTML comment'),
     (r'^\s*\|.*\|\s*$', 'table pipes'),
     (r'\[screenshot missing', 'missing screenshot'),
+    (r'\{\{|\}\}', 'template placeholder {{ }}'),
 ]
 
 
